@@ -49,8 +49,8 @@ class Main extends Widget_Base
 
     public function get_custom_help_url()
     {
-        // ⬇️ Replace with your pricing/activation URL
-        return 'https://your-domain.com/primekit-pro';
+        // ⬇ Replace with your pricing/activation URL
+        return Helpers::get_pro_upgrade_url();
     }
 
     public function get_style_depends()
