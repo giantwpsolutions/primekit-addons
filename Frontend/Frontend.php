@@ -30,6 +30,7 @@ use PrimeKit\Frontend\Elementor\Configuration;
  class Frontend {
 
     protected $Elementor_Config;
+
     /**
      * PublicManager constructor
      *
@@ -46,5 +47,6 @@ use PrimeKit\Frontend\Elementor\Configuration;
      */
     public function initialize() {
         $this->Elementor_Config = Configuration::instance();
+    
     }
  }

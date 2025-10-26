@@ -22,6 +22,7 @@ use PrimeKit\Frontend\Elementor\Globals\CustomCSS;
 use PrimeKit\Frontend\Elementor\Globals\CSSTransform;
 use PrimeKit\Frontend\Elementor\Globals\NestedTabsExtend;
 use PrimeKit\Frontend\Elementor\Globals\PreLoader;
+use PrimeKit\Frontend\Elementor\Inc\Helpers;
 
 
 /**
@@ -251,6 +252,13 @@ class Configuration
             $this->register_woocommerce_widgets($widgets_manager, $namespace_base);
         }
 
+        // Register Pro widgets if Pro is active
+        if (Helpers::is_pro_active()) {
+            return;
+        }else { 
+            $this->register_pro_locked_widgets($widgets_manager, $namespace_base);
+        }
+
     }
 
     /**
@@ -356,6 +364,25 @@ class Configuration
         ];
 
         foreach ($woocommerce_widgets as $option_name => $widget_class) {
+            $is_enabled = get_option($option_name, 1); // Get the option value (default to enabled)
+
+            if ($is_enabled) {
+                $full_class_name = $namespace_base . $widget_class; // Combine base namespace with class path
+                $widgets_manager->register(new $full_class_name());
+            }
+        }
+    }
+
+    /**
+     * Registers Pro-specific widgets.
+     */
+    private function register_pro_locked_widgets($widgets_manager, $namespace_base)
+    {
+        $pro_widgets = [
+            'primekit_advanced_accordion_locked_widget_field' => 'AdvancedAccordionLocked\Main',
+        ];
+
+        foreach ($pro_widgets as $option_name => $widget_class) {
             $is_enabled = get_option($option_name, 1); // Get the option value (default to enabled)
 
             if ($is_enabled) {

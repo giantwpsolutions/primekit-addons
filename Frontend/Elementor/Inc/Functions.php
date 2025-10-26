@@ -15,6 +15,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+use PrimeKit\Frontend\Elementor\Inc\Helpers;
+
 /**
  * This class is responsible for some helper functions and actions for the Elementor Addons.
  *
@@ -83,6 +85,15 @@ class Functions
             );
         }
 
+        if (!Helpers::is_pro_active()) {
+            $elements_manager->add_category(
+                'primekitpro-category',
+                [
+                    'title' => esc_html__('PrimeKit Pro', 'primekit-addons'), 
+                    'icon' => 'fa fa-plug',
+                ] 
+            );
+        }
 
     }
 
@@ -110,7 +121,7 @@ class Functions
     {
         // Check nonce for security
         check_ajax_referer('primekit_mailchimp_nonce', 'nonce');
-        
+
         // Sanitize and validate form inputs
         $email = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
         $fname = isset($_POST['fname']) ? sanitize_text_field(wp_unslash($_POST['fname'])) : '';
@@ -224,7 +235,7 @@ class Functions
         // Safely escape the product_id
         $product_id = isset($_POST['product_id']) ? (int) sanitize_text_field(wp_unslash($_POST['product_id'])) : 0;
         // Safely escape the quantity, use sent quantity or default to 1
-        $quantity = isset($_POST['quantity']) ? (int) sanitize_text_field(wp_unslash($_POST['quantity'])) : 1;        
+        $quantity = isset($_POST['quantity']) ? (int) sanitize_text_field(wp_unslash($_POST['quantity'])) : 1;
 
         if (!wc_get_product($product_id)) {
             wp_send_json_error(['message' => esc_html__('Invalid product.', 'primekit-addons')]);
