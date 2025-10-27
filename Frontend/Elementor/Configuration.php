@@ -384,6 +384,7 @@ class Configuration
             'primekit_advanced_tab_locked_widget_field' => 'AdvancedTabLocked\Main',
             'primekit_advanced_email_signature_locked_widget_field' => 'EmailSignatureLocked\Main',
             'primekit_advanced_jobs_locked_widget_field' => 'JobsLocked\Main',
+            'primekit_advanced_lottie_locked_widget_field' => 'LottieLocked\Main',
         ];
 
         foreach ($pro_widgets as $option_name => $widget_class) {
