@@ -391,6 +391,7 @@ class Configuration
             'primekit_advanced_resources_locked_widget_field' => 'ResourcesLocked\Main',
             'primekit_advanced_revenue_growth_graphs_locked_widget_field' => 'RevenueGrowthGraphsLocked\Main',
             'primekit_advanced_team_member_carousel_locked_widget_field' => 'TeamMemberCarouselLocked\Main',
+            'primekit_advanced_timeline_milestone_locked_widget_field' => 'TimelineMilestoneLocked\Main',
         ];
 
         foreach ($pro_widgets as $option_name => $widget_class) {
