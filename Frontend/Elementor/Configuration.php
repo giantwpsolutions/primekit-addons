@@ -389,6 +389,7 @@ class Configuration
             'primekit_advanced_protected_content_locked_widget_field' => 'ProtectedContentLocked\Main',
             'primekit_advanced_resource_form_locked_widget_field' => 'ResourceFormLocked\Main',
             'primekit_advanced_resources_locked_widget_field' => 'ResourcesLocked\Main',
+            'primekit_advanced_revenue_growth_graphs_locked_widget_field' => 'RevenueGrowthGraphsLocked\Main',
         ];
 
         foreach ($pro_widgets as $option_name => $widget_class) {
