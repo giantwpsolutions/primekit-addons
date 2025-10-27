@@ -380,6 +380,7 @@ class Configuration
     {
         $pro_widgets = [
             'primekit_advanced_accordion_locked_widget_field' => 'AdvancedAccordionLocked\Main',
+            'primekit_advanced_pricing_table_locked_widget_field' => 'AdvancedPricingTableLocked\Main',
         ];
 
         foreach ($pro_widgets as $option_name => $widget_class) {
