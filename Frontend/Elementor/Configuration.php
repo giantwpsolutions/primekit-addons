@@ -386,6 +386,8 @@ class Configuration
             'primekit_advanced_jobs_locked_widget_field' => 'JobsLocked\Main',
             'primekit_advanced_lottie_locked_widget_field' => 'LottieLocked\Main',
             'primekit_advanced_project_progress_track_locked_widget_field' => 'ProjectProgressTrackLocked\Main',
+            'primekit_advanced_protected_content_locked_widget_field' => 'ProtectedContentLocked\Main',
+            'primekit_advanced_resource_form_locked_widget_field' => 'ResourceFormLocked\Main',
         ];
 
         foreach ($pro_widgets as $option_name => $widget_class) {
