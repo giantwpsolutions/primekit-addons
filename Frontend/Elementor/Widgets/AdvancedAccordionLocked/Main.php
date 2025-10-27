@@ -53,11 +53,10 @@ class Main extends Widget_Base
         return Helpers::get_pro_upgrade_url();
     }
 
-    public function get_style_depends()
-    {
-        // Do NOT enqueue Pro assets from the free proxy
-        return [];
-    }
+public function get_style_depends() {
+    return ['primekit-locked-styles']; // same handle used in Helpers
+}
+
 
     public function get_script_depends()
     {
@@ -90,13 +89,7 @@ class Main extends Widget_Base
 
     protected function render()
     {
-        $message = Helpers::get_locked_message('Advanced Accordion');
-        $url = Helpers::get_pro_upgrade_url();
-
-        echo '<div class="primekit-locked-widget" style="border:1px dashed #bbb;padding:18px;border-radius:8px;text-align:center">';
-        echo '<p style="font-weight:600;margin-bottom:6px;">' . wp_kses_post($message) . '</p>';
-        echo '<a class="elementor-button elementor-button-success" href="' . esc_url($url) . '" target="_blank" rel="noopener">';
-        echo esc_html__('Upgrade to PrimeKit Pro', 'primekit');
-        echo '</a></div>';
+        // Print shared HTML
+        echo Helpers::get_locked_box_html('Advanced Accordion');
     }
 }

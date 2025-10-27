@@ -16,6 +16,7 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 
 use PrimeKit\Frontend\Elementor\Configuration;
+use PrimeKit\Frontend\Elementor\Inc\Helpers;
 
 /**
  * Class PublicManager
@@ -30,6 +31,7 @@ use PrimeKit\Frontend\Elementor\Configuration;
  class Frontend {
 
     protected $Elementor_Config;
+    protected $Helpers;
 
     /**
      * PublicManager constructor
@@ -47,6 +49,6 @@ use PrimeKit\Frontend\Elementor\Configuration;
      */
     public function initialize() {
         $this->Elementor_Config = Configuration::instance();
-    
+        $this->Helpers = Helpers::instance();
     }
  }
