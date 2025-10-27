@@ -393,6 +393,7 @@ class Configuration
             'primekit_team_member_carousel_locked_widget_field' => 'TeamMemberCarouselLocked\Main',
             'primekit_timeline_milestone_locked_widget_field' => 'TimelineMilestoneLocked\Main',
             'primekit_video_testimonials_locked_widget_field' => 'VideoTestimonialsLocked\Main',
+            'primekit_whatsapp_chat_locked_widget_field' => 'WhatsAppChatLocked\Main',
         ];
 
         foreach ($pro_widgets as $option_name => $widget_class) {
