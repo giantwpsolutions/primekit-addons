@@ -268,6 +268,9 @@ Learn more about how [Appsero collects and uses this data](https://appsero.com/p
 
 == Changelog ==
 
+= 1.2.9 =
+- Minor Changes
+
 = 1.2.8 =
 - Bug Fixing
 

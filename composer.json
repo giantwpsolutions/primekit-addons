@@ -1,7 +1,7 @@
 {
     "name": "nexibyllc/primekit-addons",
     "license": "GPL-2.0-or-later",
-    "version": "1.2.8",
+    "version": "1.2.9",
     "autoload": {
         "psr-4": {
             "PrimeKit\\": "Inc/",

@@ -105,7 +105,7 @@ class Helpers
     {
         $title = esc_html__('This widget is part of PrimeKit Pro', 'primekit-addons');
         $message = $extra_message ?: sprintf(
-            esc_html__('Activate or upgrade to unlock %s and 14+ more premium widgets.', 'primekit-addons'),
+            esc_html__('Activate or upgrade to unlock %s and 15+ more premium widgets.', 'primekit-addons'),
             esc_html($widget_title)
         );
 
