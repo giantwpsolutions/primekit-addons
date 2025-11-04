@@ -24,6 +24,9 @@ use Elementor\Group_Control_Typography;
 class Main extends Widget_Base
 {
 
+	private static $did_posts = [];
+	private static $level = 0;
+
 	public function get_name()
 	{
 		return 'primekit-page-content';
@@ -369,6 +372,23 @@ class Main extends Widget_Base
 	 */
 	protected function render()
 	{
+		if (\Elementor\Plugin::instance()->editor->is_edit_mode()) {
+			$post_id = \Elementor\Plugin::instance()->editor->get_post_id();
+		} else {
+			$post_id = get_the_ID();
+		}
+
+		if (isset(self::$did_posts[$post_id])) {
+			return;
+		}
+		self::$level++;
+		self::$did_posts[$post_id] = true;
+
 		include 'renderview.php';
+
+		self::$level--;
+		if (0 === self::$level) {
+			self::$did_posts = [];
+		}
 	}
 }
