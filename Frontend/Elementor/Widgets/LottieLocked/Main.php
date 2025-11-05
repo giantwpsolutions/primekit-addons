@@ -20,7 +20,7 @@ class Main extends Widget_Base {
 
     public function get_icon() {
         // subtle lock hint in the panel
-        return 'eicon-animation primekit-addons-icon eicon-lock';
+        return 'eicon-animation primekit-addons-icon';
     }
 
     public function get_categories() {
