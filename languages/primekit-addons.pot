@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-02T11:24:10+00:00\n"
+"POT-Creation-Date: 2025-11-05T12:48:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: primekit-addons\n"
 
 #. Plugin Name of the plugin
@@ -666,6 +666,7 @@ msgstr ""
 
 #. Translators: %1$s and %2$s are HTML link tags that link to the Mailchimp API key page.
 #: Admin/Inc/Dashboard/Settings/SettingsTabs/Mailchimp.php:73
+#, php-format
 msgid "Enter your Mailchimp API Key. You can get it %1$shere%2$s."
 msgstr ""
 
@@ -1038,6 +1039,7 @@ msgstr ""
 
 #. Translators: %s is the search query
 #: Admin/Inc/ThemeBuilder/Inc/Templates/primekit-search.php:38
+#, php-format
 msgid "Search Results for: %s"
 msgstr ""
 
@@ -1054,6 +1056,7 @@ msgstr ""
 #: Frontend/Elementor/Configuration.php:153
 #: Frontend/Elementor/Configuration.php:173
 #: Frontend/Elementor/Configuration.php:194
+#, php-format
 msgid "\"%1$s\" requires \"%2$s\" version %3$s or greater."
 msgstr ""
 
@@ -1430,6 +1433,7 @@ msgid "This widget is part of PrimeKit Pro"
 msgstr ""
 
 #: Frontend/Elementor/Inc/Helpers.php:108
+#, php-format
 msgid "Activate or upgrade to unlock %s and 15+ more premium widgets."
 msgstr ""
 
@@ -1762,19 +1766,19 @@ msgstr ""
 #: Frontend/Elementor/Widgets/IconBox/Main.php:900
 #: Frontend/Elementor/Widgets/ImageGallery/Main.php:338
 #: Frontend/Elementor/Widgets/LoadingPage/Main.php:298
-#: Frontend/Elementor/Widgets/PageContent/Main.php:179
-#: Frontend/Elementor/Widgets/PageContent/Main.php:212
-#: Frontend/Elementor/Widgets/PageContent/Main.php:245
-#: Frontend/Elementor/Widgets/PageContent/Main.php:278
-#: Frontend/Elementor/Widgets/PageContent/Main.php:311
-#: Frontend/Elementor/Widgets/PageContent/Main.php:344
+#: Frontend/Elementor/Widgets/PageContent/Main.php:182
+#: Frontend/Elementor/Widgets/PageContent/Main.php:215
+#: Frontend/Elementor/Widgets/PageContent/Main.php:248
+#: Frontend/Elementor/Widgets/PageContent/Main.php:281
+#: Frontend/Elementor/Widgets/PageContent/Main.php:314
+#: Frontend/Elementor/Widgets/PageContent/Main.php:347
 #: Frontend/Elementor/Widgets/PageTitle/Main.php:130
-#: Frontend/Elementor/Widgets/PostContent/Main.php:179
-#: Frontend/Elementor/Widgets/PostContent/Main.php:212
-#: Frontend/Elementor/Widgets/PostContent/Main.php:245
-#: Frontend/Elementor/Widgets/PostContent/Main.php:278
-#: Frontend/Elementor/Widgets/PostContent/Main.php:311
-#: Frontend/Elementor/Widgets/PostContent/Main.php:344
+#: Frontend/Elementor/Widgets/PostContent/Main.php:182
+#: Frontend/Elementor/Widgets/PostContent/Main.php:215
+#: Frontend/Elementor/Widgets/PostContent/Main.php:248
+#: Frontend/Elementor/Widgets/PostContent/Main.php:281
+#: Frontend/Elementor/Widgets/PostContent/Main.php:314
+#: Frontend/Elementor/Widgets/PostContent/Main.php:347
 #: Frontend/Elementor/Widgets/PostsSlider/Main.php:454
 #: Frontend/Elementor/Widgets/PostsSlider/Main.php:488
 #: Frontend/Elementor/Widgets/PostsSlider/Main.php:553
@@ -2295,14 +2299,14 @@ msgstr ""
 #: Frontend/Elementor/Widgets/GravityForms/Main.php:904
 #: Frontend/Elementor/Widgets/GravityForms/Main.php:993
 #: Frontend/Elementor/Widgets/Lottie/Main.php:230
-#: Frontend/Elementor/Widgets/PageContent/Main.php:62
-#: Frontend/Elementor/Widgets/PageContent/Main.php:72
+#: Frontend/Elementor/Widgets/PageContent/Main.php:65
+#: Frontend/Elementor/Widgets/PageContent/Main.php:75
 #: Frontend/Elementor/Widgets/PageTitle/Main.php:51
 #: Frontend/Elementor/Widgets/PageTitle/Main.php:80
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:139
 #: Frontend/Elementor/Widgets/Popup/Main.php:191
-#: Frontend/Elementor/Widgets/PostContent/Main.php:62
-#: Frontend/Elementor/Widgets/PostContent/Main.php:72
+#: Frontend/Elementor/Widgets/PostContent/Main.php:65
+#: Frontend/Elementor/Widgets/PostContent/Main.php:75
 #: Frontend/Elementor/Widgets/PostInfo/Main.php:98
 #: Frontend/Elementor/Widgets/PostTitle/Main.php:52
 #: Frontend/Elementor/Widgets/PostTitle/Main.php:81
@@ -2357,14 +2361,14 @@ msgstr ""
 #: Frontend/Elementor/Widgets/IconBox/Main.php:188
 #: Frontend/Elementor/Widgets/ImgHover/Main.php:187
 #: Frontend/Elementor/Widgets/Lottie/Main.php:234
-#: Frontend/Elementor/Widgets/PageContent/Main.php:77
+#: Frontend/Elementor/Widgets/PageContent/Main.php:80
 #: Frontend/Elementor/Widgets/PageTitle/Main.php:85
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:198
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:230
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:261
 #: Frontend/Elementor/Widgets/Popup/Main.php:195
 #: Frontend/Elementor/Widgets/Portfolio/Main.php:181
-#: Frontend/Elementor/Widgets/PostContent/Main.php:77
+#: Frontend/Elementor/Widgets/PostContent/Main.php:80
 #: Frontend/Elementor/Widgets/PostInfo/Main.php:103
 #: Frontend/Elementor/Widgets/PostTitle/Main.php:86
 #: Frontend/Elementor/Widgets/PricingTable/Main.php:123
@@ -2421,14 +2425,14 @@ msgstr ""
 #: Frontend/Elementor/Widgets/ImgHover/Main.php:164
 #: Frontend/Elementor/Widgets/ImgHover/Main.php:191
 #: Frontend/Elementor/Widgets/Lottie/Main.php:238
-#: Frontend/Elementor/Widgets/PageContent/Main.php:81
+#: Frontend/Elementor/Widgets/PageContent/Main.php:84
 #: Frontend/Elementor/Widgets/PageTitle/Main.php:89
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:234
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:265
 #: Frontend/Elementor/Widgets/Popup/Main.php:199
 #: Frontend/Elementor/Widgets/Portfolio/Main.php:158
 #: Frontend/Elementor/Widgets/Portfolio/Main.php:185
-#: Frontend/Elementor/Widgets/PostContent/Main.php:81
+#: Frontend/Elementor/Widgets/PostContent/Main.php:84
 #: Frontend/Elementor/Widgets/PostInfo/Main.php:107
 #: Frontend/Elementor/Widgets/PostTitle/Main.php:90
 #: Frontend/Elementor/Widgets/SearchIcon/Main.php:81
@@ -2487,14 +2491,14 @@ msgstr ""
 #: Frontend/Elementor/Widgets/IconBox/Main.php:196
 #: Frontend/Elementor/Widgets/ImgHover/Main.php:195
 #: Frontend/Elementor/Widgets/Lottie/Main.php:242
-#: Frontend/Elementor/Widgets/PageContent/Main.php:85
+#: Frontend/Elementor/Widgets/PageContent/Main.php:88
 #: Frontend/Elementor/Widgets/PageTitle/Main.php:93
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:202
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:238
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:269
 #: Frontend/Elementor/Widgets/Popup/Main.php:203
 #: Frontend/Elementor/Widgets/Portfolio/Main.php:189
-#: Frontend/Elementor/Widgets/PostContent/Main.php:85
+#: Frontend/Elementor/Widgets/PostContent/Main.php:88
 #: Frontend/Elementor/Widgets/PostInfo/Main.php:111
 #: Frontend/Elementor/Widgets/PostTitle/Main.php:94
 #: Frontend/Elementor/Widgets/SearchIcon/Main.php:85
@@ -2611,9 +2615,9 @@ msgstr ""
 #: Frontend/Elementor/Widgets/CircularSkills/Main.php:84
 #: Frontend/Elementor/Widgets/IconBox/Main.php:242
 #: Frontend/Elementor/Widgets/LoadingPage/Main.php:167
-#: Frontend/Elementor/Widgets/PageContent/Main.php:102
+#: Frontend/Elementor/Widgets/PageContent/Main.php:105
 #: Frontend/Elementor/Widgets/PageTitle/Main.php:110
-#: Frontend/Elementor/Widgets/PostContent/Main.php:102
+#: Frontend/Elementor/Widgets/PostContent/Main.php:105
 #: Frontend/Elementor/Widgets/PostTitle/Main.php:111
 #: Frontend/Elementor/Widgets/SiteLogo/Main.php:127
 #: Frontend/Elementor/Widgets/SiteTitle/Main.php:185
@@ -2638,9 +2642,9 @@ msgstr ""
 #: Frontend/Elementor/Widgets/CircularSkills/Main.php:85
 #: Frontend/Elementor/Widgets/IconBox/Main.php:243
 #: Frontend/Elementor/Widgets/LoadingPage/Main.php:168
-#: Frontend/Elementor/Widgets/PageContent/Main.php:103
+#: Frontend/Elementor/Widgets/PageContent/Main.php:106
 #: Frontend/Elementor/Widgets/PageTitle/Main.php:111
-#: Frontend/Elementor/Widgets/PostContent/Main.php:103
+#: Frontend/Elementor/Widgets/PostContent/Main.php:106
 #: Frontend/Elementor/Widgets/PostTitle/Main.php:112
 #: Frontend/Elementor/Widgets/SiteLogo/Main.php:128
 #: Frontend/Elementor/Widgets/SiteTitle/Main.php:186
@@ -2735,22 +2739,22 @@ msgstr ""
 #: Frontend/Elementor/Widgets/MailChimp/Main.php:462
 #: Frontend/Elementor/Widgets/MailChimp/Main.php:742
 #: Frontend/Elementor/Widgets/ModernPostGrid/Main.php:505
-#: Frontend/Elementor/Widgets/PageContent/Main.php:159
-#: Frontend/Elementor/Widgets/PageContent/Main.php:192
-#: Frontend/Elementor/Widgets/PageContent/Main.php:225
-#: Frontend/Elementor/Widgets/PageContent/Main.php:258
-#: Frontend/Elementor/Widgets/PageContent/Main.php:291
-#: Frontend/Elementor/Widgets/PageContent/Main.php:324
-#: Frontend/Elementor/Widgets/PageContent/Main.php:357
+#: Frontend/Elementor/Widgets/PageContent/Main.php:162
+#: Frontend/Elementor/Widgets/PageContent/Main.php:195
+#: Frontend/Elementor/Widgets/PageContent/Main.php:228
+#: Frontend/Elementor/Widgets/PageContent/Main.php:261
+#: Frontend/Elementor/Widgets/PageContent/Main.php:294
+#: Frontend/Elementor/Widgets/PageContent/Main.php:327
+#: Frontend/Elementor/Widgets/PageContent/Main.php:360
 #: Frontend/Elementor/Widgets/PageTitle/Main.php:143
 #: Frontend/Elementor/Widgets/Popup/Main.php:256
-#: Frontend/Elementor/Widgets/PostContent/Main.php:159
-#: Frontend/Elementor/Widgets/PostContent/Main.php:192
-#: Frontend/Elementor/Widgets/PostContent/Main.php:225
-#: Frontend/Elementor/Widgets/PostContent/Main.php:258
-#: Frontend/Elementor/Widgets/PostContent/Main.php:291
-#: Frontend/Elementor/Widgets/PostContent/Main.php:324
-#: Frontend/Elementor/Widgets/PostContent/Main.php:357
+#: Frontend/Elementor/Widgets/PostContent/Main.php:162
+#: Frontend/Elementor/Widgets/PostContent/Main.php:195
+#: Frontend/Elementor/Widgets/PostContent/Main.php:228
+#: Frontend/Elementor/Widgets/PostContent/Main.php:261
+#: Frontend/Elementor/Widgets/PostContent/Main.php:294
+#: Frontend/Elementor/Widgets/PostContent/Main.php:327
+#: Frontend/Elementor/Widgets/PostContent/Main.php:360
 #: Frontend/Elementor/Widgets/PostInfo/Main.php:137
 #: Frontend/Elementor/Widgets/PostTitle/Main.php:144
 #: Frontend/Elementor/Widgets/PricingTable/Main.php:882
@@ -2952,9 +2956,9 @@ msgstr ""
 #: Frontend/Elementor/Widgets/MailChimp/Main.php:728
 #: Frontend/Elementor/Widgets/ModernPostGrid/Main.php:573
 #: Frontend/Elementor/Widgets/ModernPostGrid/Main.php:611
-#: Frontend/Elementor/Widgets/PageContent/Main.php:122
+#: Frontend/Elementor/Widgets/PageContent/Main.php:125
 #: Frontend/Elementor/Widgets/Popup/Main.php:228
-#: Frontend/Elementor/Widgets/PostContent/Main.php:122
+#: Frontend/Elementor/Widgets/PostContent/Main.php:125
 #: Frontend/Elementor/Widgets/SearchIcon/Main.php:184
 #: Frontend/Elementor/Widgets/SingleImgScroll/Main.php:301
 #: Frontend/Elementor/Widgets/SkillBar/Main.php:315
@@ -2983,8 +2987,8 @@ msgstr ""
 
 #: Frontend/Elementor/Widgets/AuthorBio/Main.php:160
 #: Frontend/Elementor/Widgets/BreadCrumb/Main.php:114
-#: Frontend/Elementor/Widgets/PageContent/Main.php:134
-#: Frontend/Elementor/Widgets/PostContent/Main.php:134
+#: Frontend/Elementor/Widgets/PageContent/Main.php:137
+#: Frontend/Elementor/Widgets/PostContent/Main.php:137
 #: Frontend/Elementor/Widgets/WooCommerce/ProductCheckout/Main.php:100
 #: Frontend/Elementor/Widgets/WooCommerce/WooAccount/Main.php:355
 #: Frontend/Elementor/Widgets/WooCommerce/WooBreadCrumb/Main.php:111
@@ -2993,8 +2997,8 @@ msgstr ""
 
 #: Frontend/Elementor/Widgets/AuthorBio/Main.php:173
 #: Frontend/Elementor/Widgets/BreadCrumb/Main.php:126
-#: Frontend/Elementor/Widgets/PageContent/Main.php:146
-#: Frontend/Elementor/Widgets/PostContent/Main.php:146
+#: Frontend/Elementor/Widgets/PageContent/Main.php:149
+#: Frontend/Elementor/Widgets/PostContent/Main.php:149
 #: Frontend/Elementor/Widgets/WooCommerce/WooBreadCrumb/Main.php:123
 msgid "Link Hover Color"
 msgstr ""
@@ -4109,6 +4113,7 @@ msgstr ""
 #. translators: Category name
 #: Frontend/Elementor/Widgets/CatInfo/inline-view.php:24
 #: Frontend/Elementor/Widgets/CatInfo/list-view.php:26
+#, php-format
 msgid "View all posts in %s"
 msgstr ""
 
@@ -4252,6 +4257,7 @@ msgstr ""
 
 #. Translators: %1$s is the number of comments, %2$s is the post title.
 #: Frontend/Elementor/Widgets/CommentForm/Templates/comment-form.php:23
+#, php-format
 msgctxt "comments title"
 msgid "%1$s thought on &ldquo;%2$s&rdquo;"
 msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
@@ -4598,6 +4604,7 @@ msgstr ""
 #. Translators: %1$s and %2$s are HTML links to the settings page.
 #: Frontend/Elementor/Widgets/CostEstimation/Main.php:81
 #: Frontend/Elementor/Widgets/CostEstimation/RenderView.php:104
+#, php-format
 msgid "Package names are not configured yet. Please go to the %1$ssettings page%2$s to configure them."
 msgstr ""
 
@@ -4611,6 +4618,7 @@ msgstr ""
 
 #. Translators: %1$s and %2$s are HTML links to the settings page.
 #: Frontend/Elementor/Widgets/CostEstimation/Main.php:107
+#, php-format
 msgid "Package names can be modified here. Please go to the %1$ssettings page%2$s in the dashboard to configure them."
 msgstr ""
 
@@ -6277,6 +6285,7 @@ msgstr ""
 
 #. translators: %s is the link to the plugin settings
 #: Frontend/Elementor/Widgets/MailChimp/Main.php:73
+#, php-format
 msgid "Mailchimp API key is not set. Please configure it in the <a href=\"%s\" target=\"_blank\">plugin settings</a>."
 msgstr ""
 
@@ -6298,6 +6307,7 @@ msgstr ""
 
 #. Translators: %1$s and %2$s are placeholders for the link to the Mailchimp documentation.
 #: Frontend/Elementor/Widgets/MailChimp/Main.php:115
+#, php-format
 msgid "Select your Mailchimp Audience List. You can find more information %1$shere%2$s."
 msgstr ""
 
@@ -6530,48 +6540,43 @@ msgstr ""
 msgid "No posts found."
 msgstr ""
 
-#: Frontend/Elementor/Widgets/PageContent/Main.php:34
+#: Frontend/Elementor/Widgets/PageContent/Main.php:37
 msgid "Page Contents"
 msgstr ""
 
-#: Frontend/Elementor/Widgets/PageContent/Main.php:114
-#: Frontend/Elementor/Widgets/PostContent/Main.php:114
+#: Frontend/Elementor/Widgets/PageContent/Main.php:117
+#: Frontend/Elementor/Widgets/PostContent/Main.php:117
 msgid "Paragraph Style"
 msgstr ""
 
-#: Frontend/Elementor/Widgets/PageContent/Main.php:171
-#: Frontend/Elementor/Widgets/PostContent/Main.php:171
+#: Frontend/Elementor/Widgets/PageContent/Main.php:174
+#: Frontend/Elementor/Widgets/PostContent/Main.php:174
 msgid "H1 Style"
 msgstr ""
 
-#: Frontend/Elementor/Widgets/PageContent/Main.php:204
-#: Frontend/Elementor/Widgets/PostContent/Main.php:204
+#: Frontend/Elementor/Widgets/PageContent/Main.php:207
+#: Frontend/Elementor/Widgets/PostContent/Main.php:207
 msgid "H2 Style"
 msgstr ""
 
-#: Frontend/Elementor/Widgets/PageContent/Main.php:237
-#: Frontend/Elementor/Widgets/PostContent/Main.php:237
+#: Frontend/Elementor/Widgets/PageContent/Main.php:240
+#: Frontend/Elementor/Widgets/PostContent/Main.php:240
 msgid "H3 Style"
 msgstr ""
 
-#: Frontend/Elementor/Widgets/PageContent/Main.php:270
-#: Frontend/Elementor/Widgets/PostContent/Main.php:270
+#: Frontend/Elementor/Widgets/PageContent/Main.php:273
+#: Frontend/Elementor/Widgets/PostContent/Main.php:273
 msgid "H4 Style"
 msgstr ""
 
-#: Frontend/Elementor/Widgets/PageContent/Main.php:303
-#: Frontend/Elementor/Widgets/PostContent/Main.php:303
+#: Frontend/Elementor/Widgets/PageContent/Main.php:306
+#: Frontend/Elementor/Widgets/PostContent/Main.php:306
 msgid "H5 Style"
 msgstr ""
 
-#: Frontend/Elementor/Widgets/PageContent/Main.php:336
-#: Frontend/Elementor/Widgets/PostContent/Main.php:336
+#: Frontend/Elementor/Widgets/PageContent/Main.php:339
+#: Frontend/Elementor/Widgets/PostContent/Main.php:339
 msgid "H6 Style"
-msgstr ""
-
-#: Frontend/Elementor/Widgets/PageContent/renderview.php:21
-#: Frontend/Elementor/Widgets/PostContent/renderview.php:20
-msgid "No content available."
 msgstr ""
 
 #: Frontend/Elementor/Widgets/PopularPosts/Main.php:52
@@ -6626,6 +6631,7 @@ msgstr ""
 
 #. Translators: %s is the number of comments.
 #: Frontend/Elementor/Widgets/PopularPosts/RenderView.php:86
+#, php-format
 msgid "%s Comment"
 msgid_plural "%s Comments"
 msgstr[0] ""
@@ -6732,8 +6738,12 @@ msgstr ""
 msgid "Portfolio Link"
 msgstr ""
 
-#: Frontend/Elementor/Widgets/PostContent/Main.php:34
+#: Frontend/Elementor/Widgets/PostContent/Main.php:37
 msgid "Post Contents"
+msgstr ""
+
+#: Frontend/Elementor/Widgets/PostContent/renderview.php:20
+msgid "No content available."
 msgstr ""
 
 #: Frontend/Elementor/Widgets/PostInfo/Main.php:19
