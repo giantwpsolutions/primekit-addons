@@ -183,8 +183,9 @@ class Helpers
             display:inline-block; padding:8px 14px; border-radius:6px;
             background:#e6006d; color:#fff; text-decoration:none; font-weight:600;
             box-shadow:0 6px 14px rgba(230,0,109,.25);
+            color:#fff !important;
         }
-        .primekit-locked-btn:hover{ filter:brightness(1.05); color:#fff; }';
+        .primekit-locked-btn:hover{ filter:brightness(1.05); color:#fff !important; }';
 
         wp_add_inline_style($handle, $css);
 
