@@ -21,7 +21,7 @@ class Main extends Widget_Base {
 
     public function get_icon() {
         // your icon + small lock hint
-        return 'primekit-addons-icon eicon-lock';
+        return 'eicon-notes primekit-addons-icon-lock';
     }
 
     public function get_categories() {

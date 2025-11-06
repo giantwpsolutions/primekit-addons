@@ -18,7 +18,7 @@ class Main extends Widget_Base {
     }
 
     public function get_icon() {
-        return 'primekit-addons-icon eicon-lock';
+        return 'eicon-progress-tracker primekit-addons-icon-lock';
     }
 
     public function get_categories() {

@@ -1,22 +1,45 @@
 .primekit-elementor-wc-product-tabs-info-message {
-    background: #eee;
-    color: #333;
-    font-size: 14px;
-    line-height: 1.4;
-    font-style: italic;
-    border-left: 3px solid blueviolet;
-    padding: 10px 5px;
-
+  background: #eee;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+  font-style: italic;
+  border-left: 3px solid blueviolet;
+  padding: 10px 5px;
 }
 .primekit-addons-icon:after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 15px;
-    height: 15px;
-    display: block;
-    background-image: url(../img/primekit-icon.svg);
-    background-position: center;
-    background-size: 100%;
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 15px;
+  height: 15px;
+  display: block;
+  background-image: url(../img/primekit-icon.svg);
+  background-position: center;
+  background-size: 100%;
+}
+.primekit-addons-icon-lock:after {
+  content: "\e96f";
+  position: absolute;
+  top: 10px;
+  right: 7px;
+  display: block;
+  font-size: 14px;
+  font-family: eicons;
+  font-style: normal;
+}
+.elementor-element:hover .primekit-addons-icon-lock:after {
+  color: #93003f;
+}
+.primekit-whatsapp-icon:before {
+  background-image: url(../img/whatsapp.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 27px;
+  height: 27px;
+  display: inline-block;
+  content: "" !important;
+  fill: white;
+  color: #fff;
 }

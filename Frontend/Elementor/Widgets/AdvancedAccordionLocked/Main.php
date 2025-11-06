@@ -27,7 +27,7 @@ class Main extends Widget_Base
     public function get_icon()
     {
         // reuse your icon + hint lock
-        return 'eicon-accordion primekit-addons-icon eicon-lock';
+        return 'eicon-accordion primekit-addons-icon-lock';
     }
 
     public function get_categories()
