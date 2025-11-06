@@ -43,7 +43,7 @@ class ProTab
             esc_html__('Animated Timeline', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/animated-timeline.svg',
             false,
-            self::demo_url('widgets/animated-timeline')
+            self::demo_url('widgets/primekit-animated-timeline/')
         ); 
       
         // Jobs
@@ -52,7 +52,7 @@ class ProTab
             esc_html__('Jobs', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/jobs.svg',
             false,
-            self::demo_url('widgets/jobs')
+            self::demo_url('widgets/primekit-jobs/')
         );     
         // Email Signature
         PrimeKitWidgets::primekit_available_widget(
@@ -60,7 +60,7 @@ class ProTab
             esc_html__('Email Signature', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/email-signature.svg',
             false,
-            self::demo_url('widgets/email-signature')
+            self::demo_url('widgets/primekit-email-signature/')
         );     
         // Team Member
         PrimeKitWidgets::primekit_available_widget(
@@ -68,7 +68,7 @@ class ProTab
             esc_html__('Team Member Carousel', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/team-member-carousel.svg',
             false,
-            self::demo_url('widgets/team-member-carousel')
+            self::demo_url('widgets/primekit-team-member-carousel/')
         );     
         
         // Timeline Milestone
@@ -77,7 +77,7 @@ class ProTab
             esc_html__('Timeline Milestone', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/timeline-milestone.svg',
             false,
-            self::demo_url('widgets/timeline-milestone')
+            self::demo_url('widgets/primekit-timeline-milestone/')
         );     
         
         // Video Testimonials
@@ -86,7 +86,7 @@ class ProTab
             esc_html__('Video Testimonials', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/video-testimonials.svg',
             false,
-            self::demo_url('widgets/video-testimonials')
+            self::demo_url('widgets/primekit-video-testimonials/')
         );     
         // Resources
         PrimeKitWidgets::primekit_available_widget(
@@ -94,7 +94,7 @@ class ProTab
             esc_html__('Resources', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/resources.svg',
             false,
-            self::demo_url('widgets/resources')
+            self::demo_url('widgets/resource-widgets/')
         );     
         // Resources Form
         PrimeKitWidgets::primekit_available_widget(
@@ -102,7 +102,7 @@ class ProTab
             esc_html__('Resources Form', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/resource-form.svg',
             false,
-            self::demo_url('widgets/resources-form')
+            self::demo_url('widgets/primekit-resource-form/')
         );     
         // Project Progress
         PrimeKitWidgets::primekit_available_widget(
@@ -110,7 +110,7 @@ class ProTab
             esc_html__('Project Progress', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/project-progress-tracker.svg',
             false,
-            self::demo_url('widgets/project-progress')
+            self::demo_url('widgets/primekit-project-progress-tracker/')
         );     
         // Revenue Growth
         PrimeKitWidgets::primekit_available_widget(
@@ -118,7 +118,7 @@ class ProTab
             esc_html__('Revenue Growth Graph', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/revenue-growth-graphs.svg',
             false,
-            self::demo_url('widgets/revenue-growth')
+            self::demo_url('widgets/primekit-revenue-growth-graphs/')
         );           
         // Advanced Accordion
         PrimeKitWidgets::primekit_available_widget(
@@ -134,7 +134,7 @@ class ProTab
             esc_html__('Advanced Pricing Table', 'primekit-pro'),
             PRIMEKIT_ADMIN_ASSETS . '/img/icons/advanced-pricing-table.svg',
             false,
-            self::demo_url('widgets/advanced-pricing-table')
+            self::demo_url('widgets/advanced-pricing-table/')
         );           
         // Advanced Tab
         PrimeKitWidgets::primekit_available_widget(
