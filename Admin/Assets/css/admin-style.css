@@ -171,7 +171,9 @@
 .primekit-switch input:checked + .primekit-slider:before {
   transform: translateX(26px);
 }
-
+#freePro .primekit-slider {
+  display: none;
+}
 .primekit-switch-label {
   position: absolute;
   top: 50%;

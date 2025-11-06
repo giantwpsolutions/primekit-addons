@@ -6,7 +6,9 @@ if (!defined('ABSPATH'))
 
 use PrimeKit\Admin\Inc\Dashboard\AvailableWidgets\RegularTab;
 use PrimeKit\Admin\Inc\Dashboard\AvailableWidgets\WooCommerceTab;
+use PrimeKit\Admin\Inc\Dashboard\AvailableWidgets\ProTab;
 use PrimeKit\Frontend\Elementor\Inc\Functions;
+use PrimeKit\Frontend\Elementor\Inc\Helpers;
 
 class PrimeKitWidgets
 {
@@ -60,6 +62,14 @@ class PrimeKitWidgets
                 'callback' => 'render_regular_widgets_list'
             ]
         ];
+
+        //conditionally add the pro tab if pro is not active
+        if (!Helpers::is_pro_active()) {
+            $tabs['freePro'] = [
+                'label' => 'Pro',
+                'callback' => 'render_pro_widgets_list'
+            ];
+        }
     
         // Conditionally add the WooCommerce tab if WooCommerce is active
         if (Functions::is_woocommerce_active()) {
@@ -68,6 +78,8 @@ class PrimeKitWidgets
                 'callback' => 'render_woocommerce_widgets_list'
             ];
         }
+
+
 
         // Allow external code to add additional tabs
         $tabs = apply_filters('primekit_available_widgets_tabs_register', $tabs);
@@ -173,6 +185,24 @@ class PrimeKitWidgets
             [RegularTab::class, 'primekit_regular_widgets_display']
         );
     }
+
+        /**
+        * Renders a list of pro widgets.
+        *
+        * This function is a wrapper for {@see render_widgets_wrapper} that renders a
+        * list of pro widgets. It displays a heading with the given title and
+        * calls the `primekit_pro_widgets_display` method from the `ProTab`
+        * class to render the list of widgets.
+        *
+        * @since 1.0.0
+        */
+    public function render_pro_widgets_list() {
+        $this->render_widgets_wrapper(
+            esc_html__('List of pro widgets available in PrimeKit Pro.', 'primekit-addons'),
+            [ProTab::class, 'primekit_pro_widgets_display']
+        );
+    }
+
 
     /**
      * Renders a list of WooCommerce widgets.
