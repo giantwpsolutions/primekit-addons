@@ -20,7 +20,7 @@ class Main extends Widget_Base {
 
     public function get_icon() {
         // Original icon + subtle lock badge
-        return 'eicon-testimonial primekit-addons-icon';
+        return 'eicon-testimonial primekit-addons-icon eicon-lock';
     }
 
     public function get_categories() {

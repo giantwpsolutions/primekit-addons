@@ -21,7 +21,7 @@ class Main extends Widget_Base {
 
     public function get_icon() {
         // your icon + lock hint
-        return 'eicon-time-line primekit-addons-icon';
+        return 'eicon-time-line primekit-addons-icon eicon-lock';
     }
 
     public function get_categories() {

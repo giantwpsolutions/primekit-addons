@@ -20,7 +20,7 @@ class Main extends Widget_Base {
 
 	public function get_icon() {
 		// Same base icon with a lock hint
-		return 'primekit-whatsapp-icon primekit-addons-icon';
+		return 'primekit-whatsapp-icon primekit-addons-icon eicon-lock';
 	}
 
 	public function get_categories() {
