@@ -62,14 +62,6 @@ class PrimeKitWidgets
                 'callback' => 'render_regular_widgets_list'
             ]
         ];
-
-        //conditionally add the pro tab if pro is not active
-        if (!Helpers::is_pro_active()) {
-            $tabs['freePro'] = [
-                'label' => 'Pro',
-                'callback' => 'render_pro_widgets_list'
-            ];
-        }
     
         // Conditionally add the WooCommerce tab if WooCommerce is active
         if (Functions::is_woocommerce_active()) {
@@ -78,7 +70,13 @@ class PrimeKitWidgets
                 'callback' => 'render_woocommerce_widgets_list'
             ];
         }
-
+        //conditionally add the pro tab if pro is not active
+        if (!Helpers::is_pro_active()) {
+            $tabs['freePro'] = [
+                'label' => 'Pro',
+                'callback' => 'render_pro_widgets_list'
+            ];
+        }
 
 
         // Allow external code to add additional tabs

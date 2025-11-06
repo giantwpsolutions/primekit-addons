@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-05T12:48:53+00:00\n"
+"POT-Creation-Date: 2025-11-06T07:49:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: primekit-addons\n"
@@ -85,45 +85,49 @@ msgstr ""
 msgid "Rate Us"
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:37
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:38
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:94
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:39
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:40
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:106
 msgid "Available Widgets"
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:106
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:118
 msgid "Widgets"
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:114
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:126
 msgid "Content not available or not found callback function."
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:151
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:163
 msgid "No widgets to display."
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:172
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:184
 msgid "List of regular widgets available in PrimeKit."
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:189
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:201
+msgid "List of pro widgets available in PrimeKit Pro."
+msgstr ""
+
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:219
 msgid "List of WooCommerce widgets available in PrimeKit."
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:226
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:256
 msgid "Free"
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:226
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:256
 msgid "Pro"
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:235
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:265
 msgid "off"
 msgstr ""
 
-#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:236
+#: Admin/Inc/Dashboard/AvailableWidgets/PrimeKitWidgets.php:266
 msgid "on"
 msgstr ""
 
