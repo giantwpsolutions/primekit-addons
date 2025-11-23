@@ -32,6 +32,7 @@ Our theme Builder makes it simple to design your website’s header, footer, sin
 
 == Widget List: 70+ Available Widgets ==
 
+
 - [Advanced Animated Text](https://demo.primekitaddons.com/widgets/advanced-animated-text-elementor-widget/) — 10+ headline animations (typing, rotate, slide, zoom). Quick controls for speed, loop, and style.
 
 - [Advanced Circular Skill](https://demo.primekitaddons.com/widgets/advanced-circular-skill-elementor-widget/) — Animated radial progress for skills/KPIs. Set size, colors, and labels.
