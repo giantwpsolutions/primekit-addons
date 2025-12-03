@@ -16,7 +16,7 @@ The Elementor Custom Widgets plugin by PrimeKit offers a Theme Builder, Pop-Ups,
 == Description ==
 Welcome to **[PrimeKit Addons](https://primekitaddons.com/)**, your go-to treasure chest for all things Elementor! Boasting a lineup of more than **70+ meticulously designed free widgets, 15+ powerful Pro widgets,**, and **20+ ready-to-import templates** we're here to take your web designing experience to the next level. Our toolkit is perfect for anyone looking to create anything from a professional business website to an artistic portfolio. At PrimeKit Addons, we prioritize ease of use, smooth integration, and the flexibility to customize every detail to match your unique vision. Get ready to transform your ideas into reality with the ultimate tools at your fingertips!
 
-[https://www.youtube.com/watch?v=Fo2a-tcea_c]
+[youtube https://www.youtube.com/watch?v=Fo2a-tcea_c]
 
 == Useful Links ==
 
