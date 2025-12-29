@@ -16,8 +16,6 @@ class Library_Source extends Source_Base
     const LIBRARY_CACHE_KEY = 'primekit_library_cache';
     const API_TEMPLATES_INFO_URL = 'https://demo.primekitaddons.com/wp-json/primekit/v1/templates';
     const API_TEMPLATE_DATA_URL = 'https://demo.primekitaddons.com/wp-json/primekit/v1/json';
-    const LOCAL_TEMPLATES_INFO_PATH = PRIMEKIT_TEMPLATE_PATH . 'data/templates-info.json';
-    const LOCAL_TEMPLATE_DATA_PATH = PRIMEKIT_TEMPLATE_PATH . 'data/template-';
 
     public function get_id()
     {
@@ -103,8 +101,11 @@ class Library_Source extends Source_Base
             return $data;
         }
 
-        // Make remote API request
-        $response = wp_remote_get(self::API_TEMPLATES_INFO_URL);
+        // Always use remote API
+        $response = wp_remote_get(self::API_TEMPLATES_INFO_URL, [
+            'timeout' => 30,
+            'sslverify' => false
+        ]);
 
         if (!is_wp_error($response) && 200 === wp_remote_retrieve_response_code($response)) {
             $data = json_decode(wp_remote_retrieve_body($response), true);
@@ -115,17 +116,7 @@ class Library_Source extends Source_Base
             }
         }
 
-        // // Try loading from local file if remote request fails
-        // if (file_exists(self::LOCAL_TEMPLATES_INFO_PATH)) {
-        //     $json_content = file_get_contents(self::LOCAL_TEMPLATES_INFO_PATH);
-        //     $data = json_decode($json_content, true);
-
-        //     if (!empty($data) && is_array($data)) {
-        //         update_option(self::LIBRARY_CACHE_KEY, $data, 'no');
-        //         return $data;
-        //     }
-        // }
-
+        // Return empty array if remote request fails
         update_option(self::LIBRARY_CACHE_KEY, []);
         return false;
     }
@@ -156,63 +147,115 @@ class Library_Source extends Source_Base
             return;
         }
 
-        $api_url = self::API_TEMPLATE_DATA_URL . '/' . $template_id . '.json';
-        $response = wp_remote_get($api_url);
+        $api_url = self::API_TEMPLATE_DATA_URL . '/' . $template_id;
+        $response = wp_remote_get($api_url, [
+            'timeout' => 30,
+            'sslverify' => false
+        ]);
 
-        if (!is_wp_error($response) && 200 === wp_remote_retrieve_response_code($response)) {
-            return wp_remote_retrieve_body($response);
-        }
-
-        // Commented out local file loading
-        // $template_file = self::LOCAL_TEMPLATE_DATA_PATH . $template_id . '.json';
-        
-        // if (file_exists($template_file)) {
-        //     return file_get_contents($template_file);
-        // }
-
-        return false;
+        return wp_remote_retrieve_body($response);
     }
 
-    public function get_data(array $args, $context = 'display')
+    public function get_data(array $args)
     {
-        if (empty($args['template_id'])) {
-            throw new \Exception(__('Template ID is required', 'primekit'));
-        }
-
         $data = self::request_template_data($args['template_id']);
-
-        if (!$data) {
-            throw new \Exception(__('Template data not found', 'primekit'));
-        }
 
         $data = json_decode($data, true);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception(__('Invalid template data format', 'primekit'));
+        if (empty($data) || empty($data['content'])) {
+            throw new \Exception(__('Template does not have any content', 'primekit'));
         }
 
-        if (empty($data) || empty($data['content']) || !is_array($data['content'])) {
-            throw new \Exception(__('Template does not have valid content structure', 'primekit'));
+        $data['content'] = $this->replace_elements_ids($data['content']);
+
+        // Import images immediately before processing
+        $data['content'] = $this->import_images($data['content']);
+
+        $data['content'] = $this->process_export_import_content($data['content'], 'on_import');
+
+        $post_id = $args['editor_post_id'];
+        $document = \Elementor\Plugin::instance()->documents->get($post_id);
+
+        if ($document) {
+            $data['content'] = $document->get_elements_raw_data($data['content'], true);
         }
 
-        try {
-            $data['content'] = $this->replace_elements_ids($data['content']);
-            $data['content'] = $this->process_export_import_content($data['content'], 'on_import');
+        return $data;
+    }
 
-            $post_id = $args['editor_post_id'];
-            $document = elementor()->documents->get($post_id);
+    /**
+     * Import images from remote URLs to local media library
+     */
+    private function import_images($content)
+    {
+        if (!is_array($content)) {
+            return $content;
+        }
 
-            if ($document) {
-                $data['content'] = $document->get_elements_raw_data($data['content'], true);
+        // Cache for downloaded images to avoid duplicates
+        static $image_cache = [];
+
+        foreach ($content as $key => $value) {
+            if (is_array($value)) {
+                $content[$key] = $this->import_images($value);
+            } elseif (is_string($value) && $this->is_image_url($value)) {
+                // Only import remote demo site images
+                if (strpos($value, 'demo.primekitaddons.com') !== false) {
+                    // Check cache first to avoid re-downloading same image
+                    if (isset($image_cache[$value])) {
+                        $content[$key] = $image_cache[$value];
+                    } else {
+                        $local_url = $this->download_image($value);
+                        if ($local_url) {
+                            $image_cache[$value] = $local_url;
+                            $content[$key] = $local_url;
+                        }
+                    }
+                }
             }
-
-            if ('display' === $context) {
-                $data['content'] = $this->replace_elements_ids($data['content']);
-            }
-
-            return $data;
-        } catch (\Exception $e) {
-            throw new \Exception(__('Error processing template content: ', 'primekit') . $e->getMessage());
         }
+
+        return $content;
+    }
+
+    /**
+     * Check if string is an image URL
+     */
+    private function is_image_url($url)
+    {
+        $image_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'];
+        $extension = strtolower(pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
+        return in_array($extension, $image_extensions);
+    }
+
+    /**
+     * Download image and import to media library
+     */
+    private function download_image($url)
+    {
+        require_once(ABSPATH . 'wp-admin/includes/media.php');
+        require_once(ABSPATH . 'wp-admin/includes/file.php');
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+        $tmp = download_url($url);
+
+        if (is_wp_error($tmp)) {
+            return false;
+        }
+
+        $file_array = [
+            'name' => basename(parse_url($url, PHP_URL_PATH)),
+            'tmp_name' => $tmp
+        ];
+
+        $id = media_handle_sideload($file_array, 0);
+
+        @unlink($tmp);
+
+        if (is_wp_error($id)) {
+            return false;
+        }
+
+        return wp_get_attachment_url($id);
     }
 }

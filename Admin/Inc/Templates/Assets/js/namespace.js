@@ -16,8 +16,8 @@
         return;
       }
 
-      //  Cleaner loading display
-      this.clearAndShowLoading(); // Clear existing content
+      // Clear existing content
+      modalContent.innerHTML = "";
 
       // Fetch templates using WordPress site URL
       const siteUrl = "https://demo.primekitaddons.com/";
@@ -31,17 +31,26 @@
         .then((data) => {
           console.log("Templates loaded:", data);
 
+          // Hide loading spinner
+          this.hideLoadingSpinner();
+
           this.templates = data; //  Store globally for filtering
           this.renderTemplates(data); // move rendering into a dedicated method
         })
         .catch((error) => {
           console.error("Error loading templates:", error);
+
+          // Hide loading spinner
+          this.hideLoadingSpinner();
+
           modalContent.innerHTML = `<p>Failed to load templates. Please try again later.</p>`;
         });
     },
 
     showModal() {
+      console.log("showModal called");
       const modalElement = document.getElementById("primekit-template-modal");
+      console.log("Modal element:", modalElement);
       if (!modalElement) {
         console.error("Modal element not found.");
         return;
@@ -49,6 +58,14 @@
       this.selectedCategory = "all";
       this.selectedType = "all";
       this.searchQuery = "";
+
+      console.log("Showing modal with fadeIn");
+      // Show the modal using jQuery
+      jQuery(modalElement).css('display', 'block').fadeIn(300).attr('aria-hidden', 'false');
+
+      // Show loading spinner
+      this.showLoadingSpinner();
+
       // Load templates when the modal is opened
       this.loadTemplates();
 
@@ -59,22 +76,50 @@
         this.bindSearchInput(); // Bind search input event
       }, 100); // Call the function to load template categories
 
-      // Show the modal
-      MicroModal.show("primekit-template-modal");
+      // Bind close events
+      this.bindCloseEvents();
     },
 
-    /**
-     * Clears existing content in the modal and displays a loading message
-     * @param {string} message - Optional message to display. Defaults to "Loading templates..."
-     */
-    clearAndShowLoading() {
-      const modalContent = document.getElementById(
-        "primekit-templates-modal-content"
-      );
-      if (modalContent) {
-        modalContent.innerHTML = `<span class="primekit-templates-loader"></span>`;
+    bindCloseEvents() {
+      const modalElement = document.getElementById("primekit-template-modal");
+      if (!modalElement) return;
+
+      // Close on overlay click
+      jQuery(modalElement).find('.modal__overlay').off('click').on('click', function(e) {
+        if (e.target === this) {
+          primekitNamespace.closeModal();
+        }
+      });
+
+      // Close on close button click
+      jQuery(modalElement).find('.modal__close').off('click').on('click', function(e) {
+        e.preventDefault();
+        primekitNamespace.closeModal();
+      });
+
+      // Close on ESC key
+      jQuery(document).off('keyup.primekitmodal').on('keyup.primekitmodal', function(e) {
+        if (e.key === 'Escape' || e.keyCode === 27) {
+          primekitNamespace.closeModal();
+        }
+      });
+    },
+
+    closeModal() {
+      const modalElement = document.getElementById("primekit-template-modal");
+      if (modalElement) {
+        // Remove focus from any element inside the modal before closing
+        if (document.activeElement && modalElement.contains(document.activeElement)) {
+          document.activeElement.blur();
+        }
+
+        jQuery(modalElement).fadeOut(300, function() {
+          jQuery(this).attr('aria-hidden', 'true');
+        });
+        jQuery(document).off('keyup.primekitmodal');
       }
     },
+
 
     /** Binds input event to search field with debouncing
      * Updates searchQuery and filters templates when user types
@@ -133,16 +178,11 @@
               return diffTime < 30 * 24 * 60 * 60 * 1000;
             })()
           : false;
-        // Determine version display
+        // Determine version display - Hidden
         let versionDisplay = "";
-        if (template.av) {
-          versionDisplay = `<p title="This Template Available from PrimeKit v${template.av} or higher" class="primekit-template-available">v${template.av}</p>`;
-        } else if (isNew) {
-          versionDisplay = `<p title="This template has been added to our library within the last 30 days" class="primekit-template-available">New</p>`;
-        }
         const proIcon = `
         <p title="This is a premium template available exclusively in PrimeKit Pro" class="primekit-template-pro">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 30 30" fill="none">
             <rect width="30" height="30" rx="15" fill="url(#paint0_linear_10_17)"></rect>
             <path d="M8.81031 17.2931C8.54203 15.5492 8.27374 13.8054 8.00546 12.0615C7.94596 11.6749 8.38581 11.4113 8.69868 11.6459C9.53454 12.2728 10.3704 12.8997 11.2062 13.5266C11.4814 13.733 11.8735 13.6658 12.0643 13.3796L14.1519 10.2482C14.3725 9.91727 14.8587 9.91727 15.0793 10.2482L17.1669 13.3796C17.3577 13.6658 17.7498 13.7329 18.025 13.5266C18.8608 12.8997 19.6966 12.2728 20.5325 11.6459C20.8454 11.4113 21.2852 11.6749 21.2258 12.0615C20.9575 13.8054 20.6892 15.5492 20.4209 17.2931H8.81031Z" fill="white"></path>
             <path d="M19.8158 20.1957H9.41587C9.08157 20.1957 8.81055 19.9247 8.81055 19.5904V18.2606H20.4212V19.5904C20.4211 19.9247 20.1501 20.1957 19.8158 20.1957Z" fill="white"></path>
@@ -158,12 +198,12 @@
 
         const freeIcon = `
         <p title="This template is available for all PrimeKit users" class="primekit-template-free">
-          <svg 
-            id="fi_6188570" 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 500 500" 
-            width="512" 
-            height="512"
+          <svg
+            id="fi_6188570"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 500 500"
+            width="40"
+            height="40"
           >
             <path 
               d="M263.465 21.646c11.491-7.252 26.547-5.088 35.529 5.108 7.052 8.005 18.078 11.243 28.339 8.321 13.068-3.721 26.905 2.598 32.65 14.911 4.511 9.668 14.178 15.88 24.846 15.968 13.587.111 25.083 10.072 27.127 23.506 1.605 10.547 9.13 19.232 19.341 22.321 13.006 3.935 21.229 16.731 19.406 30.196-1.432 10.572 3.342 21.025 12.269 26.866 11.37 7.44 15.656 22.034 10.113 34.44-4.352 9.74-2.717 21.115 4.203 29.234 8.814 10.342 8.814 25.552 0 35.894-6.92 8.12-8.555 19.494-4.203 29.234 5.543 12.406 1.258 27.001-10.113 34.44-8.927 5.841-13.701 16.294-12.269 26.866 1.824 13.465-6.4 26.261-19.406 30.196-10.211 3.089-17.737 11.774-19.341 22.321-2.044 13.433-13.54 23.394-27.127 23.506-10.668.087-20.335 6.3-24.846 15.968-5.746 12.313-19.582 18.632-32.65 14.911-10.26-2.922-21.286.316-28.339 8.321-8.982 10.196-24.038 12.361-35.529 5.108-9.022-5.694-20.513-5.694-29.535 0-11.491 7.252-26.547 5.087-35.529-5.108-7.052-8.005-18.078-11.243-28.339-8.321-13.068 3.721-26.905-2.598-32.65-14.911-4.511-9.668-14.178-15.88-24.846-15.968-13.587-.111-25.083-10.072-27.127-23.506-1.605-10.547-9.13-19.232-19.341-22.321-13.006-3.935-21.229-16.731-19.406-30.196 1.432-10.572-3.342-21.025-12.269-26.866-11.37-7.44-15.656-22.034-10.113-34.44 4.352-9.74 2.717-21.115-4.203-29.234-8.814-10.342-8.814-25.553 0-35.894 6.92-8.12 8.555-19.494 4.203-29.234-5.543-12.406-1.258-27.001 10.113-34.44 8.927-5.841 13.701-16.294 12.269-26.866-1.824-13.465 6.4-26.261 19.406-30.196 10.211-3.089 17.737-11.774 19.341-22.321 2.044-13.433 13.54-23.394 27.127-23.506 10.668-.087 20.335-6.3 24.846-15.968 5.746-12.313 19.582-18.632 32.65-14.911 10.26 2.922 21.287-.316 28.339-8.321 8.982-10.196 24.038-12.36 35.529-5.108 9.022 5.694 20.513 5.694 29.535 0z"
@@ -180,13 +220,21 @@
         `;
 
         const icon = template.is_pro ? proIcon : freeIcon;
+        const baseUrl = primekitTemplates.pluginUrl.replace(/\/$/, '');
+        const loaderIcon = baseUrl + '/Admin/Assets/img/Icon.png';
+
         templateHTML += `
           <div class="primekit-template">
           <div class="primekit-template-info">
           ${versionDisplay}
           ${icon}
           </div>
-            <img src="${template.thumbnail}" alt="${template.title}">
+            <div class="primekit-template-image-wrapper">
+              <div class="primekit-image-loader">
+                <img src="${loaderIcon}" alt="Loading..." class="primekit-loader-spinner">
+              </div>
+              <img src="${template.thumbnail}" alt="${template.title}" class="primekit-template-thumbnail" onload="this.parentElement.querySelector('.primekit-image-loader').style.display='none'" onerror="this.parentElement.querySelector('.primekit-image-loader').style.display='none'">
+            </div>
             <div class="primekit-template-content">
               <h3>${template.title}</h3>
               <div class="primekit-templates-buttons">
@@ -268,67 +316,117 @@
     },
 
     insertTemplate(templateId) {
-      console.log(`Checking template with ID: ${templateId}`);
+      console.log(`Inserting template with ID: ${templateId}`);
 
-      const siteUrl = window.location.origin;
-      const templateUrl = `${siteUrl}/wp-content/plugins/primekit-addons/Admin/Inc/Templates/data/templates/${templateId}.json`;
+      // Show insertion loader
+      this.showInsertionLoader();
 
-      fetch(templateUrl)
-        .then(async (response) => {
-          if (!response.ok) {
-            throw new Error("Template file does not exist (HTTP Error).");
-          }
-
-          const contentType = response.headers.get("content-type");
-
-          if (!contentType || !contentType.includes("application/json")) {
-            // Try reading a few characters of the body
-            const text = await response.text();
-            if (
-              text.includes("404") ||
-              text.toLowerCase().includes("not found")
-            ) {
-              throw new Error("Template file not found.");
-            }
-            throw new Error("Invalid template file type.");
-          }
-
-          // If everything looks good, parse JSON
-          return JSON.parse(await response.text());
-        })
-        .then((data) => {
+      // Use Elementor's built-in template import via the library manager
+      elementor.templates.requestTemplateContent('primekit-library', templateId, {
+        data: {},
+        success: (data) => {
           console.log("Template content loaded:", data);
 
-          if (!data || !data.content || !Array.isArray(data.content)) {
-            throw new Error("Invalid template data structure.");
-          }
-
-          const transformedContent = this.transformElementorContent(
-            data.content
-          );
-
-          if (!transformedContent || !Array.isArray(transformedContent)) {
-            throw new Error("Failed to transform template content.");
-          }
-
-          try {
-            $e.run("document/elements/import", {
-              model: elementor.elementsModel,
-              data: {
-                content: transformedContent,
-              },
+          // Insert template content directly into the page
+          if (data.content && Array.isArray(data.content)) {
+            // Import each element from the template
+            data.content.forEach((element) => {
+              elementor.getPreviewView().addChildModel(element);
             });
+
             console.log("Template inserted successfully.");
-            MicroModal.close("primekit-template-modal");
-          } catch (error) {
-            console.error("Error inserting template:", error);
-            alert("Failed to insert the template: " + error.message);
+
+            // Hide loader and close modal
+            this.hideInsertionLoader();
+            this.closeModal();
+          } else {
+            console.error("Invalid template data structure");
+            this.hideInsertionLoader();
+            alert("Invalid template data. Please try again.");
           }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert(error.message || "Failed to process the template.");
-        });
+        },
+        error: (error) => {
+          console.error("Error loading template:", error);
+          this.hideInsertionLoader();
+          alert("Failed to load template. Please check your internet connection and try again.");
+        }
+      });
+    },
+
+    showInsertionLoader() {
+      const baseUrl = primekitTemplates.pluginUrl.replace(/\/$/, '');
+      const loaderIcon = baseUrl + '/Admin/Assets/img/Icon.png';
+
+      // Find the modal container element (the actual modal box)
+      const modalContainer = document.querySelector('#primekit-template-modal .modal__container');
+      if (!modalContainer) {
+        console.error('Modal container not found');
+        return;
+      }
+
+      const loaderHTML = `
+        <div class="primekit-insertion-loader-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); display: flex; align-items: center; justify-content: center; z-index: 9999999;">
+          <div style="text-align: center;">
+            <img src="${loaderIcon}" alt="Inserting template..." style="width: 120px; height: 120px; animation: primekit-spin 1s linear infinite; margin: 0 auto 25px; display: block;">
+            <p style="margin: 0; font-size: 20px; color: #333; font-weight: 600; letter-spacing: 0.5px;">Inserting template...</p>
+          </div>
+        </div>
+        <style>
+          @keyframes primekit-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+      `;
+
+      // Add loader to the modal container (the actual modal box)
+      modalContainer.insertAdjacentHTML('beforeend', loaderHTML);
+      console.log('Insertion loader added to modal container');
+    },
+
+    hideInsertionLoader() {
+      const loader = document.querySelector('.primekit-insertion-loader-overlay');
+      if (loader) {
+        loader.remove();
+      }
+    },
+
+    showLoadingSpinner() {
+      const baseUrl = primekitTemplates.pluginUrl.replace(/\/$/, '');
+      const loaderIcon = baseUrl + '/Admin/Assets/img/Icon.png';
+
+      // Find the modal container element (the actual modal box)
+      const modalContainer = document.querySelector('#primekit-template-modal .modal__container');
+      if (!modalContainer) {
+        console.error('Modal container not found');
+        return;
+      }
+
+      const loaderHTML = `
+        <div class="primekit-loading-spinner-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); display: flex; align-items: center; justify-content: center; z-index: 9999999;">
+          <div style="text-align: center;">
+            <img src="${loaderIcon}" alt="Loading templates..." style="width: 120px; height: 120px; animation: primekit-spin 1s linear infinite; margin: 0 auto 25px; display: block;">
+            <p style="margin: 0; font-size: 20px; color: #333; font-weight: 600; letter-spacing: 0.5px;">Loading templates...</p>
+          </div>
+        </div>
+        <style>
+          @keyframes primekit-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+      `;
+
+      // Add loader to the modal container (the actual modal box)
+      modalContainer.insertAdjacentHTML('beforeend', loaderHTML);
+      console.log('Loading spinner added to modal container');
+    },
+
+    hideLoadingSpinner() {
+      const loader = document.querySelector('.primekit-loading-spinner-overlay');
+      if (loader) {
+        loader.remove();
+      }
     },
 
     transformElementorContent(content) {

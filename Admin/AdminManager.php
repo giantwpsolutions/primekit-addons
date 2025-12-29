@@ -111,10 +111,8 @@ class AdminManager
             $this->ThemeBuilder = new ThemeBuilder();
         }
 
-        // Initialize the Template Importer module if enabled in feature settings
-        if ($this->settings->get_feature_option('enable_editor_template_import')) {
-            $this->Templates = new Templates();
-        }
+        // Initialize the Template Library (always enabled)
+        $this->Templates = new Templates();
 
 
     }
