@@ -5,8 +5,8 @@ Author URI: https://www.giantwpsolutions.com/
 Contributors: giantwpsolutions, developerhabib  
 Tags: Elementor Addons, Elementor Widgets, Elementor, Theme Builder, Elementor Builder
 Requires at least: 5.4  
-Tested up to: 6.8  
-Stable tag: 1.2.10
+Tested up to: 6.9
+Stable tag: 1.2.12
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -269,6 +269,10 @@ Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without
 Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
 
 == Changelog ==
+
+= 1.2.12 =
+- Minor updates
+- Added 1-click demo import from editor
 
 = 1.2.10 =
 - Updated UI of Admin Panel
