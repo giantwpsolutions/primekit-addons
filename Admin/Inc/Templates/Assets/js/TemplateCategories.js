@@ -40,7 +40,6 @@ function loadTemplateCategories() {
       nonce: primekitTemplates.nonce,
     },
     success: function (response) {
-      console.log("category: ", response);
 
       if (
         response.success &&

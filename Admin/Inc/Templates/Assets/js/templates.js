@@ -19,44 +19,34 @@
                 const target = $previewContents.find(targetSelector);
 
                 if (target.length) {
-                    clearInterval(interval); // Stop checking once the target is found
+                    clearInterval(interval);
                     this.addLibraryButton($previewContents);
-                } else {
-                    console.log("Waiting for target to appear:", targetSelector);
                 }
-            }, 100); // Check every 100ms
+            }, 100);
         },
 
         addLibraryButton($previewContents) {
-            console.log("Adding library button");
-            const targetSelector = ".elementor-add-new-section .elementor-add-section-drag-title";
-
-            const iconUrl = primekitTemplates.pluginUrl + 'Admin/Assets/img/Icon.png';
+            const iconUrl = primekitTemplates.pluginUrl + 'Admin/Assets/img/icon-white.png';
             const customButtonHTML = `
-            <div class="elementor-add-section-area-button primekit-library-open-button primekit-add-button" id="insertStaticTemplateButton">
-                <img src="${iconUrl}" alt="PrimeKit Templates" />
+            <div class="elementor-add-section-area-button primekit-library-open-button primekit-add-button" id="insertStaticTemplateButton" style="background: linear-gradient(135deg, #0049E7 0%, #C835F8 100%) !important; width: 40px !important; height: 40px !important; border-radius: 50% !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
+                <img src="${iconUrl}" alt="PrimeKit Templates" style="width: 22px !important; height: 22px !important; filter: brightness(0) invert(1) !important;" />
             </div>
         `;
-            const buttonHTML = `
-                <div class="primekit-library-open-button" id="insertStaticTemplateButton">
-                    <i class="eicon-folder"></i>
-                    <span>PrimeKit Library</span>                   
-                </div>
-            `;
 
             if (!$previewContents.find(".primekit-library-open-button").length) {
-                const target = $previewContents.find(targetSelector);
-                if (target.length) {
-                    target.before(customButtonHTML);
-                    console.log("PrimeKit Library Button Added");
+                const addSection = $previewContents.find(".elementor-add-section-inner");
+                if (addSection.length) {
+                    const existingButtons = addSection.find(".elementor-add-section-area-button");
 
-                    // Add click event to the button
+                    if (existingButtons.length >= 2) {
+                        $(existingButtons[1]).after(customButtonHTML);
+                    } else {
+                        addSection.prepend(customButtonHTML);
+                    }
+
                     $previewContents.on("click", ".primekit-library-open-button", () => {
-                        console.log("PrimeKit Library Button Clicked");
                         primekitNamespace.showModal();
                     });
-                } else {
-                    console.error("Target not found:", targetSelector);
                 }
             }
         },
@@ -66,7 +56,6 @@
             const $button = $(event.currentTarget);
             const templateId = $button.data("template-id");
 
-            console.log(`Template Insert Clicked. Template ID: ${templateId}`);
             primekitNamespace.insertTemplate(templateId);
         },
     };

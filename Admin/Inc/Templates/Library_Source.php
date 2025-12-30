@@ -111,7 +111,7 @@ class Library_Source extends Source_Base
             $data = json_decode(wp_remote_retrieve_body($response), true);
 
             if (!empty($data) && is_array($data)) {
-                update_option(self::LIBRARY_CACHE_KEY, $data, 'no');
+                update_option(self::LIBRARY_CACHE_KEY, $data, false);
                 return $data;
             }
         }
@@ -168,10 +168,8 @@ class Library_Source extends Source_Base
 
         $data['content'] = $this->replace_elements_ids($data['content']);
 
-        // Import images immediately before processing
-        $data['content'] = $this->import_images($data['content']);
-
-        $data['content'] = $this->process_export_import_content($data['content'], 'on_import');
+        // Import remote images and update URLs (preserving original paths)
+        $data['content'] = $this->import_remote_images($data['content']);
 
         $post_id = $args['editor_post_id'];
         $document = \Elementor\Plugin::instance()->documents->get($post_id);
@@ -184,78 +182,217 @@ class Library_Source extends Source_Base
     }
 
     /**
-     * Import images from remote URLs to local media library
+     * Import remote images and replace URLs with local ones
+     *
+     * @param array $content Template content
+     * @return array Modified content with local image URLs
      */
-    private function import_images($content)
+    private function import_remote_images($content)
     {
-        if (!is_array($content)) {
-            return $content;
+        // Require WordPress media handling functions
+        if (!function_exists('media_sideload_image')) {
+            require_once(ABSPATH . 'wp-admin/includes/media.php');
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
+            require_once(ABSPATH . 'wp-admin/includes/image.php');
         }
 
-        // Cache for downloaded images to avoid duplicates
-        static $image_cache = [];
+        return $this->process_content_images($content);
+    }
 
-        foreach ($content as $key => $value) {
-            if (is_array($value)) {
-                $content[$key] = $this->import_images($value);
-            } elseif (is_string($value) && $this->is_image_url($value)) {
-                // Only import remote demo site images
-                if (strpos($value, 'demo.primekitaddons.com') !== false) {
-                    // Check cache first to avoid re-downloading same image
-                    if (isset($image_cache[$value])) {
-                        $content[$key] = $image_cache[$value];
-                    } else {
-                        $local_url = $this->download_image($value);
-                        if ($local_url) {
-                            $image_cache[$value] = $local_url;
-                            $content[$key] = $local_url;
+    /**
+     * Recursively process content and download images
+     *
+     * @param mixed $data Content data (array or value)
+     * @return mixed Processed data
+     */
+    private function process_content_images($data)
+    {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                // Check if this is an image URL that needs downloading
+                if ($key === 'url' && is_string($value) && $this->is_remote_image_url($value)) {
+                    // Download the image and get the new local URL
+                    $local_url = $this->download_image($value);
+                    if ($local_url) {
+                        $data[$key] = $local_url;
+
+                        // If there's an 'id' field, update it with the new attachment ID
+                        if (isset($data['id'])) {
+                            $attachment_id = attachment_url_to_postid($local_url);
+                            if ($attachment_id) {
+                                $data['id'] = $attachment_id;
+                            }
                         }
                     }
+                } else {
+                    // Recursively process nested arrays
+                    $data[$key] = $this->process_content_images($value);
                 }
             }
         }
 
-        return $content;
+        return $data;
     }
 
     /**
-     * Check if string is an image URL
+     * Check if URL is a remote image that needs downloading
+     *
+     * @param string $url URL to check
+     * @return bool True if remote image URL
      */
-    private function is_image_url($url)
+    private function is_remote_image_url($url)
     {
-        $image_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'];
-        $extension = strtolower(pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
-        return in_array($extension, $image_extensions);
-    }
-
-    /**
-     * Download image and import to media library
-     */
-    private function download_image($url)
-    {
-        require_once(ABSPATH . 'wp-admin/includes/media.php');
-        require_once(ABSPATH . 'wp-admin/includes/file.php');
-        require_once(ABSPATH . 'wp-admin/includes/image.php');
-
-        $tmp = download_url($url);
-
-        if (is_wp_error($tmp)) {
+        if (!is_string($url) || empty($url)) {
             return false;
         }
 
-        $file_array = [
-            'name' => basename(parse_url($url, PHP_URL_PATH)),
-            'tmp_name' => $tmp
+        // Check if it's a valid URL
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+
+        // Check if it's an image extension
+        $image_extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'];
+        $extension = strtolower(pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
+
+        if (!in_array($extension, $image_extensions)) {
+            return false;
+        }
+
+        // Check if it's from the remote server (not already local)
+        $site_url = get_site_url();
+        return (strpos($url, $site_url) === false);
+    }
+
+    /**
+     * Download remote image to local media library
+     *
+     * @param string $image_url Remote image URL
+     * @return string|false Local image URL on success, false on failure
+     */
+    private function download_image($image_url)
+    {
+        // Check if we already downloaded this image (avoid duplicates)
+        $existing_id = $this->get_cached_image_id($image_url);
+        if ($existing_id) {
+            $local_url = wp_get_attachment_url($existing_id);
+            if ($local_url) {
+                return $local_url;
+            }
+        }
+
+        // Parse the URL to get the path structure
+        $parsed_url = parse_url($image_url);
+        $path_parts = explode('/', trim($parsed_url['path'], '/'));
+
+        // Get filename
+        $filename = array_pop($path_parts);
+
+        // Extract year/month from remote path (e.g., wp-content/uploads/2024/10/image.jpg)
+        $year_month = '';
+        if (count($path_parts) >= 2) {
+            $month = array_pop($path_parts);
+            $year = array_pop($path_parts);
+
+            // Validate year/month format
+            if (is_numeric($year) && is_numeric($month) && strlen($year) === 4 && strlen($month) <= 2) {
+                $year_month = $year . '/' . $month;
+            }
+        }
+
+        // Download file to temp location
+        $temp_file = download_url($image_url);
+
+        if (is_wp_error($temp_file)) {
+            error_log('PrimeKit: Failed to download image: ' . $image_url . ' - ' . $temp_file->get_error_message());
+            return false;
+        }
+
+        // Set up the target directory preserving original year/month
+        $upload_dir = wp_upload_dir(null, false, true);
+
+        if (!empty($year_month)) {
+            // Use the original year/month from remote URL
+            $target_dir = $upload_dir['basedir'] . '/' . $year_month;
+            $target_url = $upload_dir['baseurl'] . '/' . $year_month;
+        } else {
+            // Fallback to current date if we can't parse year/month
+            $target_dir = $upload_dir['path'];
+            $target_url = $upload_dir['url'];
+        }
+
+        // Create directory if it doesn't exist
+        if (!file_exists($target_dir)) {
+            wp_mkdir_p($target_dir);
+        }
+
+        // Move file to target directory
+        $target_file = $target_dir . '/' . $filename;
+
+        if (!@rename($temp_file, $target_file)) {
+            @unlink($temp_file);
+            error_log('PrimeKit: Failed to move file to: ' . $target_file);
+            return false;
+        }
+
+        // Get file type
+        $wp_filetype = wp_check_filetype($filename, null);
+
+        // Prepare attachment data
+        $attachment = [
+            'post_mime_type' => $wp_filetype['type'],
+            'post_title'     => sanitize_file_name(pathinfo($filename, PATHINFO_FILENAME)),
+            'post_content'   => '',
+            'post_status'    => 'inherit'
         ];
 
-        $id = media_handle_sideload($file_array, 0);
+        // Insert attachment
+        $attachment_id = wp_insert_attachment($attachment, $target_file);
 
-        @unlink($tmp);
-
-        if (is_wp_error($id)) {
+        if (is_wp_error($attachment_id)) {
+            @unlink($target_file);
+            error_log('PrimeKit: Failed to insert attachment: ' . $filename);
             return false;
         }
 
-        return wp_get_attachment_url($id);
+        // Generate attachment metadata
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+        $attachment_data = wp_generate_attachment_metadata($attachment_id, $target_file);
+        wp_update_attachment_metadata($attachment_id, $attachment_data);
+
+        // Cache the mapping
+        $this->cache_image_id($image_url, $attachment_id);
+
+        // Return the local URL
+        $local_url = $target_url . '/' . $filename;
+
+        error_log('PrimeKit: Successfully downloaded: ' . $filename . ' to ' . $year_month . ' -> ' . $local_url);
+
+        return $local_url;
     }
+
+    /**
+     * Cache image URL to attachment ID mapping
+     *
+     * @param string $remote_url Remote image URL
+     * @param int $attachment_id Local attachment ID
+     */
+    private function cache_image_id($remote_url, $attachment_id)
+    {
+        $cache_key = 'primekit_image_' . md5($remote_url);
+        set_transient($cache_key, $attachment_id, WEEK_IN_SECONDS);
+    }
+
+    /**
+     * Get cached attachment ID for remote URL
+     *
+     * @param string $remote_url Remote image URL
+     * @return int|false Attachment ID or false if not cached
+     */
+    private function get_cached_image_id($remote_url)
+    {
+        $cache_key = 'primekit_image_' . md5($remote_url);
+        return get_transient($cache_key);
+    }
+
 }

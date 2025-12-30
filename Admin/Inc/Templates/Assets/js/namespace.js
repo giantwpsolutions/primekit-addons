@@ -29,7 +29,6 @@
           return response.json();
         })
         .then((data) => {
-          console.log("Templates loaded:", data);
 
           // Hide loading spinner
           this.hideLoadingSpinner();
@@ -48,9 +47,7 @@
     },
 
     showModal() {
-      console.log("showModal called");
       const modalElement = document.getElementById("primekit-template-modal");
-      console.log("Modal element:", modalElement);
       if (!modalElement) {
         console.error("Modal element not found.");
         return;
@@ -59,7 +56,6 @@
       this.selectedType = "all";
       this.searchQuery = "";
 
-      console.log("Showing modal with fadeIn");
       // Show the modal using jQuery
       jQuery(modalElement).css('display', 'block').fadeIn(300).attr('aria-hidden', 'false');
 
@@ -266,7 +262,6 @@
         modalContent.appendChild(loadMoreBtn); // Append first
 
         const observer = new IntersectionObserver((entries) => {
-          console.log("Observer triggered", entries[0].isIntersecting);
           if (entries[0].isIntersecting) {
             this.currentPage++;
             observer.disconnect(); // Avoid multiple triggers
@@ -316,7 +311,6 @@
     },
 
     insertTemplate(templateId) {
-      console.log(`Inserting template with ID: ${templateId}`);
 
       // Show insertion loader
       this.showInsertionLoader();
@@ -325,7 +319,6 @@
       elementor.templates.requestTemplateContent('primekit-library', templateId, {
         data: {},
         success: (data) => {
-          console.log("Template content loaded:", data);
 
           // Insert template content directly into the page
           if (data.content && Array.isArray(data.content)) {
@@ -334,7 +327,10 @@
               elementor.getPreviewView().addChildModel(element);
             });
 
-            console.log("Template inserted successfully.");
+
+            // Mark the page as modified so the Publish button becomes active
+            // Using the new Elementor 2.9.0+ API
+            $e.internal('document/save/set-is-modified', { status: true });
 
             // Hide loader and close modal
             this.hideInsertionLoader();
@@ -381,7 +377,6 @@
 
       // Add loader to the modal container (the actual modal box)
       modalContainer.insertAdjacentHTML('beforeend', loaderHTML);
-      console.log('Insertion loader added to modal container');
     },
 
     hideInsertionLoader() {
@@ -389,6 +384,168 @@
       if (loader) {
         loader.remove();
       }
+    },
+
+    /**
+     * Recursively collect all image URLs from template content
+     */
+    collectImageUrls(content, imageUrls = []) {
+      if (!content || typeof content !== 'object') {
+        return imageUrls;
+      }
+
+      // Check if this is an array
+      if (Array.isArray(content)) {
+        content.forEach(item => this.collectImageUrls(item, imageUrls));
+        return imageUrls;
+      }
+
+      // Check for image widgets and collect URLs
+      if (content.widgetType === 'image' && content.settings && content.settings.image && content.settings.image.url) {
+        const url = content.settings.image.url;
+        // Only collect remote URLs from demo site
+        if (url && url.includes('demo.primekitaddons.com') && !imageUrls.includes(url)) {
+          imageUrls.push(url);
+        }
+      }
+
+      // Check for background images in any settings
+      if (content.settings) {
+        Object.keys(content.settings).forEach(key => {
+          const setting = content.settings[key];
+          // Check for background image
+          if (key.includes('background_image') && setting && setting.url) {
+            const url = setting.url;
+            if (url && url.includes('demo.primekitaddons.com') && !imageUrls.includes(url)) {
+              imageUrls.push(url);
+            }
+          }
+        });
+      }
+
+      // Recursively check elements (nested sections/columns/widgets)
+      if (content.elements && Array.isArray(content.elements)) {
+        content.elements.forEach(element => this.collectImageUrls(element, imageUrls));
+      }
+
+      return imageUrls;
+    },
+
+    /**
+     * Download template images progressively in background
+     * @param {Array} imageUrls - Array of remote image URLs to download
+     */
+    downloadTemplateImagesProgressively(imageUrls) {
+
+      if (!imageUrls || imageUrls.length === 0) {
+        return;
+      }
+
+
+      // Download images one by one
+      let downloadedCount = 0;
+      const totalImages = imageUrls.length;
+
+      imageUrls.forEach((imageUrl, index) => {
+        // Stagger the requests slightly to avoid overwhelming the server
+        setTimeout(() => {
+          this.downloadSingleImage(imageUrl, (success, result) => {
+            downloadedCount++;
+
+            if (success) {
+
+              // Update the Elementor editor with the new local URL
+              this.updateImageInEditor(result.remote_url, result.local_url);
+            } else {
+              console.error(`✗ Failed to download image ${downloadedCount}/${totalImages}: ${imageUrl}`, result && result.message ? result.message : result);
+            }
+
+            // Log progress
+            if (downloadedCount === totalImages) {
+            }
+          });
+        }, index * 100); // Stagger by 100ms each
+      });
+    },
+
+    /**
+     * Download a single image via AJAX
+     */
+    downloadSingleImage(imageUrl, callback) {
+      // Debug: Log what we're sending
+
+      jQuery.ajax({
+        url: primekitTemplates.ajaxUrl,
+        type: 'POST',
+        data: {
+          action: 'primekit_download_template_image',
+          nonce: primekitTemplates.nonce,
+          image_url: imageUrl
+        },
+        success: (response) => {
+          if (response.success) {
+            callback(true, response.data);
+          } else {
+            callback(false, response.data);
+          }
+        },
+        error: (xhr, status, error) => {
+          callback(false, { message: error, status: status, responseText: xhr.responseText });
+        }
+      });
+    },
+
+    /**
+     * Update image URLs in the Elementor editor
+     */
+    updateImageInEditor(remoteUrl, localUrl) {
+      try {
+        // Get the current page settings
+        const elementorData = elementor.getPreviewView().collection;
+
+        // Recursively update all image URLs
+        this.updateElementImages(elementorData.models, remoteUrl, localUrl);
+
+        // Force Elementor to re-render the preview
+        elementor.reloadPreview();
+      } catch (error) {
+        console.error('Error updating image in editor:', error);
+      }
+    },
+
+    /**
+     * Recursively update image URLs in element models
+     */
+    updateElementImages(models, remoteUrl, localUrl) {
+      if (!models) return;
+
+      models.forEach(model => {
+        const settings = model.get('settings');
+
+        if (settings) {
+          // Update image widget
+          if (settings.get('image') && settings.get('image').url === remoteUrl) {
+            const imageData = settings.get('image');
+            imageData.url = localUrl;
+            settings.set('image', imageData);
+          }
+
+          // Update background images
+          settings.attributes && Object.keys(settings.attributes).forEach(key => {
+            if (key.includes('background_image') && settings.get(key) && settings.get(key).url === remoteUrl) {
+              const bgData = settings.get(key);
+              bgData.url = localUrl;
+              settings.set(key, bgData);
+            }
+          });
+        }
+
+        // Recursively check child elements
+        const elements = model.get('elements');
+        if (elements && elements.models) {
+          this.updateElementImages(elements.models, remoteUrl, localUrl);
+        }
+      });
     },
 
     showLoadingSpinner() {
@@ -419,7 +576,6 @@
 
       // Add loader to the modal container (the actual modal box)
       modalContainer.insertAdjacentHTML('beforeend', loaderHTML);
-      console.log('Loading spinner added to modal container');
     },
 
     hideLoadingSpinner() {
