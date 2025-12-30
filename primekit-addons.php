@@ -3,7 +3,7 @@
  * Plugin Name: PrimeKit Addons and Templates
  * Plugin URI: https://primekitaddons.com/
  * Description: The Elementor Custom Widgets plugin is built to enhance your website’s look and performance. With PrimeKit Addons and Templates, you’ll get access to a Theme Builder, Pop-Ups, Cost estimation, Pricing table, Forms, and WooCommerce building features, along with stunning custom elements that blend seamlessly with your site’s design.
- * Version: 1.2.10
+ * Version: 1.2.11
  * Author: Giant WP Solutions
  * Author URI: https://www.giantwpsolutions.com/
  * License: GPL2
@@ -11,8 +11,8 @@
  * Text Domain: primekit-addons
  * Domain Path: /languages
  * namespace: PrimeKit
- * Elementor tested up to: 3.32
- * Elementor Pro tested up to: 3.32
+ * Elementor tested up to: 3.34
+ * Elementor Pro tested up to: 3.34
  * Requires Plugins: elementor
 
  */
@@ -48,7 +48,7 @@ final class PrimeKitAddons
     /**
      * Retrieves the singleton instance of the plugin.
      *
-     * @return PrimeKit The singleton instance of the plugin.
+     * @return PrimeKitAddons The singleton instance of the plugin.
      */
     public static function get_instance()
     {
@@ -66,7 +66,7 @@ final class PrimeKitAddons
     private function define_constants()
     {
         // Define Plugin Version.
-        define('PRIMEKIT_VERSION', '1.2.10');
+        define('PRIMEKIT_VERSION', '1.2.12');
 
         // Define Plugin Path.
         define('PRIMEKIT_PATH', plugin_dir_path(__FILE__));
@@ -102,8 +102,8 @@ final class PrimeKitAddons
     {
         add_action('plugins_loaded', array($this, 'plugin_loaded'));
         add_action('init', array($this, 'register_textdomain'));
-        register_activation_hook(PRIMEKIT_PATH, array($this, 'activate'));
-        register_deactivation_hook(PRIMEKIT_PATH, array($this, 'deactivate'));
+        register_activation_hook(PRIMEKIT_FILE, array($this, 'activate'));
+        register_deactivation_hook(PRIMEKIT_FILE, array($this, 'deactivate'));
     }
 
     /**

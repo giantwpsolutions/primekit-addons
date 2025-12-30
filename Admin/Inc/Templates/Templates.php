@@ -49,9 +49,9 @@ class Templates
     {
         $this->setConstants(); // Set the constants.
         $this->init_classes(); // Initialize the classes.
-      //  add_action('wp_ajax_primekit_get_templates', [$this, 'primekit_get_templates']);
-        add_action('wp_ajax_primekit_get_template_content', [$this, 'primekit_get_template_content_handler']);
-        add_action('wp_ajax_nopriv_primekit_get_template_content', [$this, 'primekit_get_template_content_handler']);
+
+        // Register template source with Elementor
+        add_action('elementor/init', [$this, 'register_template_source']);
     }
 
 
@@ -68,9 +68,22 @@ class Templates
         $this->markup = new Modal();
         $this->Library_Source = new Library_Source();
         $this->Library_Manager = new Library_Manager();
-        
     }
-    
+
+    /**
+     * Register PrimeKit template source with Elementor
+     *
+     * @since 1.2.12
+     */
+    public function register_template_source()
+    {
+        // Get Elementor's template library manager
+        $library_manager = \Elementor\Plugin::instance()->templates_manager;
+
+        // Register our custom source
+        $library_manager->register_source(Library_Source::class);
+    }
+
 
     /**
      * Sets the constants for the PrimeKit Template.
@@ -110,33 +123,6 @@ class Templates
 
 
 
-    public function primekit_get_template_content_handler() {
-        // Validate Request
-        if (!isset($_POST['template_id'])) {
-            wp_send_json_error(['message' => 'Template ID is missing.']);
-            wp_die();
-        }
-    
-        $template_id = sanitize_text_field($_POST['template_id']);
-        $file_path = PRIMEKIT_TEMPLATE_PATH . "temp.json";
-    
-        if (!file_exists($file_path)) {
-            wp_send_json_error(['message' => 'Template not found.']);
-            wp_die();
-        }
-    
-        $content = file_get_contents($file_path);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            wp_send_json_error(['message' => 'Invalid JSON format.']);
-            wp_die();
-        }
-    
-        wp_send_json_success(['content' => $content]);
-        wp_die();
-    }
-    
-    
-    
 
 
 }

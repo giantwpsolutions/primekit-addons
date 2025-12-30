@@ -4,7 +4,7 @@
  * This function handles:
  * - Loading categories via AJAX from WordPress backend
  * - Displaying loading states and error messages
- * - Creating category checkboxes with template counts
+ * - Creating category radio buttons with template counts
  * - Loading template type tabs with counts
  * - Organizing templates by category and type
  *
@@ -16,27 +16,21 @@
  * - templates: Array of template objects with id, categories, and type properties
  * - categories: Array of category strings
  *
- * @throws {Error} If checkbox container element is not found
+ * @throws {Error} If category radio container element is not found
  * @returns {void}
  */
 
 function loadTemplateCategories() {
-  const checkboxContainer = document.querySelector(
-    ".primekit-filter-checkboxes"
+  const categoryRadios = document.querySelector(
+    "#primekit-category-radios"
   );
-  if (!checkboxContainer) {
-    console.error("Checkbox container not found.");
+  if (!categoryRadios) {
+    console.error("Category radio container not found.");
     return;
   }
 
-  //  Clear previous categories
-  checkboxContainer.innerHTML = "";
-
-  //add "loading" message again
-  const loadingDiv = document.createElement("div");
-  loadingDiv.className = "primekit-loading-categories";
-  loadingDiv.innerHTML = '<span class="primekit-templates-loader"></span>';
-  checkboxContainer.appendChild(loadingDiv);
+  // Clear previous categories
+  categoryRadios.innerHTML = "";
 
   jQuery.ajax({
     url: primekitTemplates.ajaxurl,
@@ -46,7 +40,6 @@ function loadTemplateCategories() {
       nonce: primekitTemplates.nonce,
     },
     success: function (response) {
-      console.log("category: ", response);
 
       if (
         response.success &&
@@ -54,11 +47,10 @@ function loadTemplateCategories() {
         Array.isArray(response.data.templates) &&
         Array.isArray(response.data.categories)
       ) {
-        // Clear loading
-        checkboxContainer.innerHTML = "";
         // Load types into tab
         loadTemplateTypes(response.data.templates);
-        // existing category count logic continues here...
+
+        // Populate category radio buttons
         const templates = response.data.templates;
         const categoryToTemplatesMap = {};
 
@@ -77,54 +69,63 @@ function loadTemplateCategories() {
           categoryToTemplatesMap["All"].add(template.id);
         });
 
-        response.data.categories.forEach((category) => {
+        // Add categories as radio buttons
+        response.data.categories.forEach((category, index) => {
           const count = categoryToTemplatesMap[category]?.size || 0;
-          checkboxContainer.appendChild(createCategoryLabel(category, count));
-          // Checkbox click handling (after checkboxes are created)
-          checkboxContainer
-            .querySelectorAll('input[type="checkbox"]')
-            .forEach((input) => {
-              input.addEventListener("change", function () {
-                checkboxContainer
-                  .querySelectorAll('input[type="checkbox"]')
-                  .forEach((cb) => (cb.checked = false));
-                this.checked = true;
+          const radioItem = createCategoryRadio(category, count, index === 0);
+          categoryRadios.appendChild(radioItem);
+        });
 
-                primekitNamespace.selectedCategory = this.value.toLowerCase();
-                primekitNamespace.filterTemplates();
-              });
-            });
+        // Bind change event to radios
+        categoryRadios.querySelectorAll('input[type="radio"]').forEach((radio) => {
+          radio.addEventListener("change", function () {
+            if (this.checked) {
+              primekitNamespace.selectedCategory = this.value.toLowerCase();
+              primekitNamespace.filterTemplates();
+            }
+          });
         });
       }
     },
     error: function () {
-      checkboxContainer.innerHTML =
-        '<div class="primekit-loading-categories">⚠️ Failed to load categories</div>';
+      console.error("Failed to load categories");
     },
   });
 
   /**
-   * Create a reusable label function
-   * Creates a checkbox label element for a template category
+   * Create a category radio button element
    *
    * @param {string} category - The category name to display
    * @param {number} count - The number of templates in this category
-   * @returns {HTMLLabelElement} A label element containing a checkbox and count
+   * @param {boolean} checked - Whether this radio should be checked by default
+   * @returns {HTMLLabelElement} A label element containing radio button and text
    */
-  function createCategoryLabel(category, count) {
+  function createCategoryRadio(category, count, checked = false) {
     const label = document.createElement("label");
-    label.className = "primekit-checkbox";
+    label.className = "primekit-radio-item";
 
     const input = document.createElement("input");
-    input.type = "checkbox";
+    input.type = "radio";
+    input.name = "primekit-category";
     input.value = category.toLowerCase();
-    if (category === "All") input.checked = true;
+    input.checked = checked;
 
     const span = document.createElement("span");
-    span.textContent = `${category} (${count})`;
+    span.className = "primekit-radio-label";
 
+    const categoryName = document.createElement("span");
+    categoryName.className = "primekit-radio-name";
+    categoryName.textContent = category;
+
+    const categoryCount = document.createElement("span");
+    categoryCount.className = "primekit-radio-count";
+    categoryCount.textContent = count;
+
+    span.appendChild(categoryName);
+    span.appendChild(categoryCount);
     label.appendChild(input);
     label.appendChild(span);
+
     return label;
   }
 

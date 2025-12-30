@@ -58,4 +58,4 @@
         PrimeKitTemplateLibrary.init();
     });
 
-})(jQuery));
+})(jQuery);
