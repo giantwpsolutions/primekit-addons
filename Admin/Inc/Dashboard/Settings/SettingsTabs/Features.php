@@ -73,7 +73,7 @@ class Features {
     public function defaults() {
         return [
             'enable_themebuilder' => 1,
-            'enable_editor_template_import' => 0,
+            'enable_editor_template_import' => 1,
         ];
     }
     /**
@@ -96,7 +96,7 @@ class Features {
         // Template Importer inside Elementor
         add_settings_field(
             'enable_editor_template_import',
-            esc_html__('Template Importer (Beta)', 'primekit-addons'),
+            esc_html__('Template Importer', 'primekit-addons'),
             [$this, 'render_editor_checkbox'],
             'primekit_features_settings',
             'features_settings_section'
@@ -124,14 +124,14 @@ class Features {
      */
     public function render_editor_checkbox() {
         $options = get_option('primekit_features_options', []);
-        $enabled = isset($options['enable_editor_template_import']) ? (bool)$options['enable_editor_template_import'] : false;
+        $enabled = isset($options['enable_editor_template_import']) ? (bool)$options['enable_editor_template_import'] : true;
         ?>
         <label>
             <input type="checkbox"
                    name="primekit_features_options[enable_editor_template_import]"
                    value="1"
                    <?php checked($enabled); ?>>
-            <?php esc_html_e('Allow importing ready-made templates directly within Elementor editor (Beta).', 'primekit-addons'); ?>
+            <?php esc_html_e('Allow importing ready-made templates directly within Elementor editor.', 'primekit-addons'); ?>
         </label>
         <p class="description"><?php esc_html_e('Lets users browse and import professionally designed templates from your server directly inside Elementor editor.', 'primekit-addons'); ?></p>
         <?php
