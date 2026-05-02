@@ -6,7 +6,7 @@ Contributors: giantwpsolutions, developerhabib
 Tags: Elementor Addons, Elementor Widgets, Elementor, Theme Builder, Elementor Builder
 Requires at least: 5.4  
 Tested up to: 6.9
-Stable tag: 1.2.13
+Stable tag: 1.3.0
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -20,7 +20,7 @@ Welcome to **[PrimeKit Addons](https://primekitaddons.com/)**, your go-to treasu
 
 == Useful Links ==
 
-[Demo](https://demo.primekitaddons.com/addons-widgets/) | [Documentation](https://primekitaddons.com/documentation/) | [Support](https://www.giantwpsolutions.com/support)
+[Demo](https://demo.primekitaddons.com/addons-widgets/) | [Documentation](https://docs.giantwpsolutions.com/) | [Support](https://www.giantwpsolutions.com/support/)
 
 
 == Rate This Plugin: ==
@@ -269,6 +269,14 @@ Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without
 Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
 
 == Changelog ==
+
+= 1.3.0 =
+- Admin UI: Theme Builder and Header/Footer modals fully redesigned with modern layout
+- Admin UI: Edit button on H/F list opens settings popup pre-filled (no page navigation)
+- Feature: Header Footer Builder now supports conditional display — Display Rules, Exclusion Rules, and User Roles per template
+- Feature: Multiple display conditions per template; specific rules take priority over global fallback
+- Performance: Condition matching engine rewritten with reliable archive detection via queried object
+- Fix: Theme Builder list no longer shows Header/Footer templates; lists are now properly separated
 
 = 1.2.13 =
 - Minor updates

@@ -3,6 +3,14 @@
   height: 20px;
 }
 
+/* Hide the WP auto-duplicate first submenu item ("PrimeKit" inside the dropdown).
+   The item must stay in the DOM so WP uses it as the top-level href target,
+   but it is redundant visually. */
+#toplevel_page_primekit_home .wp-submenu .wp-first-item {
+  display: none !important;
+}
+
+
 /* admin global */
 .primekit-available-widget-wrap h1 {
   margin-bottom: 30px;

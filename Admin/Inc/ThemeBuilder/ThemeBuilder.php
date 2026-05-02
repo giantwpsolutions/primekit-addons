@@ -101,7 +101,7 @@ class ThemeBuilder
      */
     public function primekit_override_header()
     {
-        if (self::should_display_template('header')) {
+        if (self::get_header_footer_template_id('header')) {
             require_once PRIMEKIT_TB_PATH . 'Inc/Templates/primekit-header.php';
             $templates = [];
             $templates[] = 'header.php';
@@ -140,7 +140,7 @@ class ThemeBuilder
      */
     public static function primekit_get_header_id()
     {
-        $header_id = self::get_template_id('header');
+        $header_id = self::get_header_footer_template_id('header');
 
         if ('' === $header_id) {
             $header_id = false;
@@ -159,11 +159,10 @@ class ThemeBuilder
      */
     public static function get_template_id($type)
     {
-
         $args = [
-            'post_type' => 'primekit_library',
+            'post_type'      => 'primekit_library',
             'posts_per_page' => -1,
-            'post_status' => 'publish',
+            'post_status'    => 'publish',
         ];
         $primekit_hf_templates = get_posts($args);
 
@@ -174,7 +173,180 @@ class ThemeBuilder
         }
 
         return '';
+    }
 
+    /**
+     * Gets the best-matching header or footer template ID, respecting display conditions.
+     * Specific conditions win over "entire_site". Falls back to the first entire_site template.
+     *
+     * @param string $type 'header' or 'footer'
+     * @return int|string Post ID or empty string.
+     */
+    public static function get_header_footer_template_id($type)
+    {
+        $templates = get_posts([
+            'post_type'      => 'primekit_library',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+            'meta_query'     => [[
+                'key'   => 'primekit_themebuilder_select',
+                'value' => $type,
+            ]],
+        ]);
+
+        if (empty($templates)) return '';
+
+        $fallback = '';
+        foreach ($templates as $template) {
+            $id = $template->ID;
+
+            $display_rules   = get_post_meta($id, 'primekit_hf_display_rules',   true);
+            $exclusion_rules = get_post_meta($id, 'primekit_hf_exclusion_rules',  true);
+            $user_roles      = get_post_meta($id, 'primekit_hf_user_roles',       true);
+
+            // Backward-compat: old single-condition string → wrap in array
+            if (!is_array($display_rules)) {
+                $legacy        = get_post_meta($id, 'primekit_hf_condition', true) ?: 'basic-global';
+                $display_rules = [$legacy];
+            }
+            if (!is_array($exclusion_rules)) $exclusion_rules = [];
+            if (!is_array($user_roles))      $user_roles      = [];
+
+            // User role gate
+            if (!self::check_user_role($user_roles)) continue;
+
+            // Exclusion rules — skip if current page is excluded
+            if (!empty($exclusion_rules) && self::matches_any_condition($exclusion_rules)) continue;
+
+            // Entire website / empty → global fallback candidate
+            $is_global = empty($display_rules) ||
+                         in_array('basic-global', $display_rules) ||
+                         in_array('entire_site',  $display_rules); // backward compat
+
+            if ($is_global) {
+                if (!$fallback) $fallback = $id;
+                continue;
+            }
+
+            // Specific rules — use if any match
+            if (self::matches_any_condition($display_rules)) {
+                return $id;
+            }
+        }
+
+        return $fallback;
+    }
+
+    /**
+     * Returns true if the current page matches any of the given conditions.
+     */
+    public static function matches_any_condition(array $conditions)
+    {
+        foreach ($conditions as $condition) {
+            if (self::check_hf_condition($condition)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if the current user satisfies the user-role rule list.
+     * Empty list or 'all' → visible to everyone.
+     */
+    public static function check_user_role(array $user_roles)
+    {
+        if (empty($user_roles) || in_array('all', $user_roles)) return true;
+
+        // Support both dash (HFB) and underscore (legacy) variants
+        if ((in_array('logged-in', $user_roles)  || in_array('logged_in', $user_roles))  && is_user_logged_in())  return true;
+        if ((in_array('logged-out', $user_roles) || in_array('logged_out', $user_roles)) && !is_user_logged_in()) return true;
+
+        if (is_user_logged_in()) {
+            $current_user = wp_get_current_user();
+            foreach ($user_roles as $role) {
+                if (in_array($role, (array) $current_user->roles)) return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if the current page matches the given display condition.
+     * Supports both new HFB-style keys and legacy keys for backward compatibility.
+     */
+    public static function check_hf_condition($condition)
+    {
+        // Handle pipe-delimited post-type rules: post|all, post|all|archive, page|all, etc.
+        if (strpos($condition, '|') !== false) {
+            $parts     = explode('|', $condition);
+            $post_type = $parts[0] ?? '';
+            $arch_type = $parts[2] ?? '';
+            $taxonomy  = $parts[3] ?? '';
+
+            if ($arch_type === '') {
+                // e.g. post|all  →  any singular of that post type
+                return is_singular($post_type);
+            }
+
+            if ($arch_type === 'archive') {
+                if (!is_archive()) return false;
+
+                // Explicit post-type archive (e.g. /blog/ CPT archive)
+                if (is_post_type_archive($post_type)) return true;
+
+                // Taxonomy archives: check if the taxonomy object type includes the post type
+                $obj = get_queried_object();
+                if ($obj instanceof \WP_Term) {
+                    $tax = get_taxonomy($obj->taxonomy);
+                    if ($tax && in_array($post_type, (array) $tax->object_type, true)) return true;
+                }
+
+                // Date / author archives default to 'post'
+                if (is_date() || is_author()) {
+                    global $wp_query;
+                    $qpt = $wp_query->get('post_type');
+                    return $post_type === 'post' && (empty($qpt) || $qpt === 'post');
+                }
+
+                return false;
+            }
+
+            if ($arch_type === 'taxarchive' && $taxonomy) {
+                // e.g. post|all|taxarchive|category
+                if (!is_archive()) return false;
+                $obj = get_queried_object();
+                return isset($obj->taxonomy) && $obj->taxonomy === $taxonomy;
+            }
+
+            return false;
+        }
+
+        switch ($condition) {
+            /* ── New HFB-style keys ── */
+            case 'basic-global':      return true;
+            case 'basic-singulars':   return is_singular();
+            case 'basic-archives':    return is_archive();
+            case 'special-404':       return is_404();
+            case 'special-search':    return is_search();
+            case 'special-blog':      return is_home();
+            case 'special-front':     return is_front_page();
+            case 'special-date':      return is_date();
+            case 'special-author':    return is_author();
+            case 'special-woo-shop':  return function_exists('is_shop') && is_shop();
+
+            /* ── Legacy keys (backward compat) ── */
+            case 'entire_site':   return true;
+            case 'front_page':    return is_front_page();
+            case 'single_post':   return is_single() && 'post' === get_post_type();
+            case 'single_page':   return is_page();
+            case 'archive':       return is_archive();
+            case 'search':        return is_search();
+            case '404':           return is_404();
+            case 'shop_single':   return function_exists('is_product') && is_product();
+            case 'shop_archive':  return function_exists('is_shop') && is_shop();
+
+            default:              return false;
+        }
     }
     /**
      * Retrieve the content of the header template.
@@ -203,7 +375,7 @@ class ThemeBuilder
      */
     public function primekit_override_footer()
     {
-        if (self::should_display_template('footer')) {
+        if (self::get_header_footer_template_id('footer')) {
             require_once PRIMEKIT_TB_PATH . 'Inc/Templates/primekit-footer.php';
             $templates = [];
             $templates[] = 'footer.php';
@@ -259,7 +431,7 @@ class ThemeBuilder
      */
     public static function primekit_get_footer_id()
     {
-        $footer_id = self::get_template_id('footer');
+        $footer_id = self::get_header_footer_template_id('footer');
 
         if ('' === $footer_id) {
             $footer_id = false;
@@ -322,11 +494,11 @@ class ThemeBuilder
                     'all'
                 );
 
-                // Enqueue main admin JS
+                // Enqueue main admin JS (wp-util provides wp.template)
                 wp_enqueue_script(
                     'primekit-theme-builder-main',
                     PRIMEKIT_TB_ASSETS . 'js/admin.js',
-                    array('jquery'),
+                    array('jquery', 'wp-util'),
                     PRIMEKIT_VERSION,
                     true
                 );
@@ -351,8 +523,48 @@ class ThemeBuilder
 
                 wp_localize_script('primekit-tb-modal-ajax', 'primekitNewTemplateCreated', [
                     'ajaxurl' => admin_url('admin-ajax.php'),
-                    'nonce' => wp_create_nonce('primekit_new_template_nonce'),
+                    'nonce'   => wp_create_nonce('primekit_new_template_nonce'),
                 ]);
+
+                // Localize all H/F template data so the edit modal can be pre-filled
+                $hf_data = [
+                    '_strings' => [
+                        'addNew'       => __('Add New Template', 'primekit-addons'),
+                        'editTemplate' => __('Edit Template', 'primekit-addons'),
+                    ],
+                ];
+                $hf_posts = get_posts([
+                    'post_type'      => 'primekit_library',
+                    'posts_per_page' => -1,
+                    'post_status'    => ['publish', 'draft'],
+                    'meta_query'     => [[
+                        'key'     => 'primekit_themebuilder_select',
+                        'value'   => ['header', 'footer'],
+                        'compare' => 'IN',
+                    ]],
+                ]);
+                foreach ($hf_posts as $tpl) {
+                    $dr = get_post_meta($tpl->ID, 'primekit_hf_display_rules',   true);
+                    $er = get_post_meta($tpl->ID, 'primekit_hf_exclusion_rules',  true);
+                    $ur = get_post_meta($tpl->ID, 'primekit_hf_user_roles',       true);
+                    $cv = get_post_meta($tpl->ID, 'primekit_hf_canvas',           true);
+                    if (!is_array($dr)) {
+                        $legacy = get_post_meta($tpl->ID, 'primekit_hf_condition', true);
+                        $dr     = $legacy ? [$legacy] : [];
+                    }
+                    if (!is_array($er)) $er = [];
+                    if (!is_array($ur)) $ur = [];
+                    $hf_data[$tpl->ID] = [
+                        'id'             => $tpl->ID,
+                        'title'          => $tpl->post_title,
+                        'type'           => get_post_meta($tpl->ID, 'primekit_themebuilder_select', true),
+                        'displayRules'   => array_values($dr),
+                        'exclusionRules' => array_values($er),
+                        'userRoles'      => array_values($ur),
+                        'canvas'         => $cv === '1',
+                    ];
+                }
+                wp_localize_script('primekit-theme-builder-main', 'primekitHFTemplates', $hf_data);
             }
         }
     }
@@ -377,10 +589,40 @@ class ThemeBuilder
     {
         check_ajax_referer('primekit_new_template_nonce', 'security');
 
-        $post_title = sanitize_text_field($_POST['postTitle']);
+        $post_title    = sanitize_text_field($_POST['postTitle']);
         $template_type = sanitize_text_field($_POST['templateType']);
-        $post_type = isset($_POST['postType']) ? sanitize_text_field($_POST['postType']) : 'primekit_library';
+        $post_type     = isset($_POST['postType']) ? sanitize_text_field($_POST['postType']) : 'primekit_library';
+        $edit_post_id  = isset($_POST['editPostId']) ? intval($_POST['editPostId']) : 0;
+        $save_only     = isset($_POST['saveOnly']) && $_POST['saveOnly'] === '1';
 
+        // ── Update existing post ──────────────────────────────────────────
+        if ($edit_post_id && get_post($edit_post_id)) {
+            wp_update_post(['ID' => $edit_post_id, 'post_title' => $post_title]);
+            update_post_meta($edit_post_id, 'primekit_themebuilder_select', $template_type);
+
+            $display_rules   = isset($_POST['displayRules'])   ? json_decode(sanitize_text_field($_POST['displayRules']),   true) : [];
+            $exclusion_rules = isset($_POST['exclusionRules']) ? json_decode(sanitize_text_field($_POST['exclusionRules']), true) : [];
+            $user_roles      = isset($_POST['userRoles'])      ? json_decode(sanitize_text_field($_POST['userRoles']),      true) : [];
+            $canvas          = isset($_POST['canvasTemplate']) && $_POST['canvasTemplate'] === '1' ? '1' : '';
+
+            update_post_meta($edit_post_id, 'primekit_hf_display_rules',   is_array($display_rules)   ? $display_rules   : []);
+            update_post_meta($edit_post_id, 'primekit_hf_exclusion_rules', is_array($exclusion_rules) ? $exclusion_rules : []);
+            update_post_meta($edit_post_id, 'primekit_hf_user_roles',      is_array($user_roles)      ? $user_roles      : []);
+            update_post_meta($edit_post_id, 'primekit_hf_canvas',          $canvas);
+
+            if ($save_only) {
+                $redirect = admin_url('edit.php?post_type=primekit_library&primekit_filter=hf');
+            } elseif (did_action('elementor/loaded')) {
+                $redirect = admin_url("post.php?post={$edit_post_id}&action=elementor");
+            } else {
+                $redirect = get_edit_post_link($edit_post_id, '');
+            }
+
+            wp_send_json_success(['redirect_url' => $redirect]);
+            exit;
+        }
+
+        // ── Create new post ───────────────────────────────────────────────
         $post_id = wp_insert_post([
             'post_title' => $post_title,
             'post_status' => 'draft',
@@ -391,14 +633,24 @@ class ThemeBuilder
             // Update the custom field with the template type
             update_post_meta($post_id, 'primekit_themebuilder_select', $template_type);
 
+            // Save display/exclusion/user-role conditions and canvas flag for header/footer
+            if (in_array($template_type, ['header', 'footer'])) {
+                $display_rules   = isset($_POST['displayRules'])   ? json_decode(sanitize_text_field($_POST['displayRules']),   true) : [];
+                $exclusion_rules = isset($_POST['exclusionRules']) ? json_decode(sanitize_text_field($_POST['exclusionRules']), true) : [];
+                $user_roles      = isset($_POST['userRoles'])      ? json_decode(sanitize_text_field($_POST['userRoles']),      true) : [];
+                $canvas          = isset($_POST['canvasTemplate'])  && $_POST['canvasTemplate'] === '1' ? '1' : '';
+
+                update_post_meta($post_id, 'primekit_hf_display_rules',   is_array($display_rules)   ? $display_rules   : []);
+                update_post_meta($post_id, 'primekit_hf_exclusion_rules', is_array($exclusion_rules) ? $exclusion_rules : []);
+                update_post_meta($post_id, 'primekit_hf_user_roles',      is_array($user_roles)      ? $user_roles      : []);
+                update_post_meta($post_id, 'primekit_hf_canvas',          $canvas);
+            }
+
             // Check if Elementor is installed and active
             if (did_action('elementor/loaded')) {
-                // Only set Elementor Canvas template for Header and Footer types
-                if (in_array($template_type, ['header', 'footer'])) {
-                    update_post_meta($post_id, '_wp_page_template', 'elementor_canvas');
-                } else {
-                    update_post_meta($post_id, '_wp_page_template', 'elementor_header_footer');
-                }
+                $use_canvas = in_array($template_type, ['header', 'footer']) ||
+                              (isset($_POST['canvasTemplate']) && $_POST['canvasTemplate'] === '1');
+                update_post_meta($post_id, '_wp_page_template', $use_canvas ? 'elementor_canvas' : 'elementor_header_footer');
 
                 $edit_with_elementor_url = admin_url("post.php?post={$post_id}&action=elementor");
                 wp_send_json_success(['redirect_url' => $edit_with_elementor_url]);

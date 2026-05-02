@@ -22,9 +22,7 @@ class PrimeKitWidgets
      */
     public function __construct()
     {
-        // Hook to add the submenu.
-        add_action('admin_menu', [$this, 'add_widgets_submenu']);
-        
+        // Submenu removed — widget management is handled by the Vue admin app.
     }
 
     /**

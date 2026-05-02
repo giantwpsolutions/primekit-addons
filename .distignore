@@ -36,6 +36,7 @@ wp-cli.local.yml
 yarn.lock
 tests
 node_modules
+app
 *.sql
 *.tar.gz
 *.zip

@@ -12,7 +12,7 @@ class TemplatesMenu
 {
     public function __construct()
     {
-        add_action('admin_menu', [$this, 'add_templates_submenu']);
+        // Submenu removed — handled by the Vue admin app.
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
         add_action('wp_ajax_primekit_fetch_templates', [$this, 'fetch_templates']);
     }

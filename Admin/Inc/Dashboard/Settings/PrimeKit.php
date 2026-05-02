@@ -6,21 +6,7 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
 class PrimeKit {
 
     public function __construct() {
-        // Hook for adding the settings page to the admin menu
-        add_action('admin_menu', [$this, 'add_settings_page']);
-        
-    }
-
-    public function add_settings_page() {
-        add_menu_page(
-            __('PrimeKit Settings', 'primekit-addons'),
-            __('PrimeKit', 'primekit-addons'),
-            'manage_options',
-            'primekit_home',
-            [$this, 'render_settings_page'],
-            PRIMEKIT_ADMIN_ASSETS . '/img/primekit-icon.svg',   
-            22       
-        );
+        // Menu is now registered by VueAdminPage — no duplicate needed here.
     }
 
     public function render_settings_page() {

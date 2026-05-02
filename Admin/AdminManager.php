@@ -26,6 +26,8 @@ use PrimeKit\Admin\Inc\Hooks\ActionHooks;
 use PrimeKit\Admin\Inc\ThemeBuilder\ThemeBuilder;
 use PrimeKit\Admin\Inc\Metabox\MetaBox;
 use PrimeKit\Admin\Inc\Templates\Templates;
+use PrimeKit\Admin\Inc\Dashboard\VueApp\VueAdminPage;
+use PrimeKit\Admin\Inc\RestAPI\RestAPI;
 
 /**
  * Class AdminManager
@@ -48,6 +50,8 @@ class AdminManager
     protected $ThemeBuilder;
     protected $MetaBox;
     protected $Templates;
+    protected $VueAdminPage;
+    protected $RestAPI;
 
     /**
      * AdminManager constructor.
@@ -69,9 +73,6 @@ class AdminManager
         add_filter('plugin_row_meta', [$this, 'plugin_row_meta'], 10, 2);
 
         $this->tracker_primekit_addons();
-
-        add_action('admin_footer', [$this, 'primekit_add_footer_rating_notice']);
-        add_action('admin_footer_text', [$this, 'primekit_custom_admin_footer']);
     }
 
     /**
@@ -104,6 +105,8 @@ class AdminManager
         $this->FilterHooks = new FilterHooks();
         $this->ActionHooks = new ActionHooks();
         $this->MetaBox = new MetaBox();
+        $this->VueAdminPage = new VueAdminPage();
+        $this->RestAPI = new RestAPI();
 
 
         // Initialize the Theme Builder module if the feature is enabled in settings

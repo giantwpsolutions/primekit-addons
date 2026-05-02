@@ -20,8 +20,7 @@ class Settings
 
     public function __construct()
     {
-        add_action('admin_menu', [$this, 'register_submenu_page'], 99);
-
+        // Submenu removed — settings are handled by the Vue admin app.
         $this->classes_initalize();
     }
 
