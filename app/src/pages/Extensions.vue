@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { api } from '../api/index.js'
+import { __ } from '../utils/i18n.js'
 
 const saving = ref(false)
 const saved = ref(false)
@@ -19,44 +20,44 @@ const extensions = ref({
 const items = [
   {
     key: 'enable_themebuilder',
-    label: 'Theme Builder',
-    desc: 'Build custom headers, footers, single post/page templates, archive pages, 404, and WooCommerce templates.',
+    label: __('Theme Builder'),
+    desc: __('Build custom headers, footers, single post/page templates, archive pages, 404, and WooCommerce templates.'),
     icon: 'layout',
   },
   {
     key: 'enable_editor_template_import',
-    label: 'Template Library',
-    desc: 'Access 20+ ready-to-import templates directly from the Elementor editor panel.',
+    label: __('Template Library'),
+    desc: __('Access 20+ ready-to-import templates directly from the Elementor editor panel.'),
     icon: 'book-open',
   },
   {
     key: 'enable_custom_css',
-    label: 'Custom CSS',
-    desc: 'Add per-element custom CSS from within the Elementor panel.',
+    label: __('Custom CSS'),
+    desc: __('Add per-element custom CSS from within the Elementor panel.'),
     icon: 'code',
   },
   {
     key: 'enable_css_transform',
-    label: 'CSS Transform Controls',
-    desc: 'Control rotate, scale, skew, and translate properties for any Elementor widget.',
+    label: __('CSS Transform Controls'),
+    desc: __('Control rotate, scale, skew, and translate properties for any Elementor widget.'),
     icon: 'sliders',
   },
   {
     key: 'enable_preloader',
-    label: 'Page PreLoader',
-    desc: 'Add an animated loading screen that displays while your page content loads.',
+    label: __('Page PreLoader'),
+    desc: __('Add an animated loading screen that displays while your page content loads.'),
     icon: 'loader',
   },
   {
     key: 'enable_wrapper_url',
-    label: 'Wrapper Link',
-    desc: 'Make any Elementor container or section fully clickable with a custom URL.',
+    label: __('Wrapper Link'),
+    desc: __('Make any Elementor container or section fully clickable with a custom URL.'),
     icon: 'link',
   },
   {
     key: 'enable_nested_tabs',
-    label: 'Enhanced Nested Tabs',
-    desc: 'Extended functionality for Elementor\'s nested tabs widget with extra style controls.',
+    label: __('Enhanced Nested Tabs'),
+    desc: __("Extended functionality for Elementor's nested tabs widget with extra style controls."),
     icon: 'layers',
   },
 ]
@@ -77,7 +78,7 @@ async function save() {
     saved.value = true
     setTimeout(() => saved.value = false, 2000)
   } catch (e) {
-    alert('Failed to save settings.')
+    alert(__('Failed to save settings.'))
   } finally {
     saving.value = false
   }
@@ -88,8 +89,8 @@ async function save() {
   <div class="pk-space-y-5">
     <div class="pk-flex pk-items-center pk-justify-between">
       <div>
-        <h2 class="pk-text-lg pk-font-bold pk-text-gray-800 pk-m-0">Extensions</h2>
-        <p class="pk-text-sm pk-text-gray-500 pk-m-0 pk-mt-0.5">Global Elementor feature extensions</p>
+        <h2 class="pk-text-lg pk-font-bold pk-text-gray-800 pk-m-0">{{ __('Extensions') }}</h2>
+        <p class="pk-text-sm pk-text-gray-500 pk-m-0 pk-mt-0.5">{{ __('Global Elementor feature extensions') }}</p>
       </div>
       <button @click="save" :disabled="saving"
               class="pk-flex pk-items-center pk-gap-2 pk-px-4 pk-py-2 pk-rounded-lg pk-text-sm pk-font-medium pk-text-white pk-transition-all"
@@ -98,7 +99,7 @@ async function save() {
         <svg v-if="saved" class="pk-w-4 pk-h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <polyline points="20 6 9 17 4 12"/>
         </svg>
-        {{ saved ? 'Saved!' : saving ? 'Saving…' : 'Save Changes' }}
+        {{ saved ? __('Saved!') : saving ? __('Saving…') : __('Save Changes') }}
       </button>
     </div>
 

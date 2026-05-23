@@ -28,7 +28,7 @@ $primekit_button_url = $primekit_settings['primekit_elementor_card_info_btn_url'
     <?php endif; ?>
 
     <!-- Dynamic Card Icon -->
-    <?php if ('icon' === $primekit_settings['primekit_elementor_card_info_type'] && !empty($primekit_card_icon)): ?>
+    <?php if ('icon' === $primekit_settings['primekit_elementor_card_info_type'] && !empty($primekit_card_icon['value'])): ?>
         <div class="primekit-card-icon">
             <?php \Elementor\Icons_Manager::render_icon($primekit_card_icon, ['aria-hidden' => 'true']); ?>
             <?php if (!empty($primekit_badge_text)): ?>
@@ -50,7 +50,7 @@ $primekit_button_url = $primekit_settings['primekit_elementor_card_info_btn_url'
     <?php endif; ?>
 
     <!-- Dynamic Button with Icon -->
-    <?php if (!empty($primekit_button_text) || !empty($primekit_button_icon)): ?>
+    <?php if ('yes' === $primekit_settings['primekit_elementor_card_info_btn_show'] && (!empty($primekit_button_text) || !empty($primekit_button_icon))): ?>
             <div class="primekit-card-button">
                 <a href="<?php echo esc_url($primekit_button_url['url']); ?>" <?php echo $primekit_button_url['is_external'] ? 'target="_blank"' : ''; ?> <?php echo $primekit_button_url['nofollow'] ? 'rel="nofollow"' : ''; ?>><?php echo esc_html($primekit_button_text); ?> <span class="primekit-btn-icon"><?php \Elementor\Icons_Manager::render_icon($primekit_button_icon, ['aria-hidden' => 'true', 'class' => 'primekit-button-icon']); ?></span></a>
             </div>

@@ -101,6 +101,11 @@ class ThemeBuilder
      */
     public function primekit_override_header()
     {
+        // Skip override inside Elementor editor preview
+        if (isset($_GET['elementor-preview']) || (isset($_GET['action']) && $_GET['action'] === 'elementor')) {
+            return;
+        }
+
         if (self::get_header_footer_template_id('header')) {
             require_once PRIMEKIT_TB_PATH . 'Inc/Templates/primekit-header.php';
             $templates = [];
@@ -361,8 +366,7 @@ class ThemeBuilder
     public static function get_header_content()
     {
         $primekit_get_header_id = self::primekit_get_header_id();
-        $frontend = new \Elementor\Frontend;
-        echo $frontend->get_builder_content_for_display($primekit_get_header_id);
+        echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display($primekit_get_header_id);
     }
 
     /**
@@ -375,6 +379,11 @@ class ThemeBuilder
      */
     public function primekit_override_footer()
     {
+        // Skip override inside Elementor editor preview
+        if (isset($_GET['elementor-preview']) || (isset($_GET['action']) && $_GET['action'] === 'elementor')) {
+            return;
+        }
+
         if (self::get_header_footer_template_id('footer')) {
             require_once PRIMEKIT_TB_PATH . 'Inc/Templates/primekit-footer.php';
             $templates = [];
@@ -418,8 +427,7 @@ class ThemeBuilder
     public static function get_footer_content()
     {
         $primekit_get_footer_id = self::primekit_get_footer_id();
-        $frontend = new \Elementor\Frontend;
-        echo $frontend->get_builder_content_for_display($primekit_get_footer_id);
+        echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display($primekit_get_footer_id);
     }
 
 
@@ -768,8 +776,7 @@ class ThemeBuilder
     public static function get_shop_archive_content()
     {
         $template_id = self::get_template_id('shop_archive');
-        $frontend = new \Elementor\Frontend;
-        echo $frontend->get_builder_content_for_display($template_id);
+        echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display($template_id);
     }
 
     /**
@@ -783,8 +790,7 @@ class ThemeBuilder
     public static function get_shop_single_content()
     {
         $template_id = self::get_template_id('shop_single');
-        $frontend = new \Elementor\Frontend;
-        echo $frontend->get_builder_content_for_display($template_id);
+        echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display($template_id);
     }
 
 }

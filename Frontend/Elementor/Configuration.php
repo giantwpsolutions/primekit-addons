@@ -285,6 +285,7 @@ class Configuration
             'primekit_circular_skill_widget_field' => 'CircularSkills\Main',
             'primekit_icon_box_widget_field' => 'IconBox\Main',
             'primekit_page_title_widget_field' => 'PageTitle\Main',
+            'primekit_page_list_widget_field' => 'PageList\Main',
             'primekit_post_title_widget_field' => 'PostTitle\Main',
             'primekit_site_logo_widget_field' => 'SiteLogo\Main',
             'primekit_site_title_tagline_field' => 'SiteTitle\Main',

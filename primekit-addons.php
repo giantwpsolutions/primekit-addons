@@ -3,7 +3,7 @@
  * Plugin Name: PrimeKit Addons and Templates
  * Plugin URI: https://primekitaddons.com/
  * Description: The Elementor Custom Widgets plugin is built to enhance your website’s look and performance. With PrimeKit Addons and Templates, you’ll get access to a Theme Builder, Pop-Ups, Cost estimation, Pricing table, Forms, and WooCommerce building features, along with stunning custom elements that blend seamlessly with your site’s design.
- * Version: 1.3.0
+ * Version: 1.3.1
  * Author: Giant WP Solutions
  * Author URI: https://www.giantwpsolutions.com/
  * License: GPL2
@@ -66,7 +66,7 @@ final class PrimeKitAddons
     private function define_constants()
     {
         // Define Plugin Version.
-        define('PRIMEKIT_VERSION', '1.3.0');
+        define('PRIMEKIT_VERSION', '1.3.1');
 
         // Define Plugin Path.
         define('PRIMEKIT_PATH', plugin_dir_path(__FILE__));

@@ -117,6 +117,8 @@ Our theme Builder makes it simple to design your website’s header, footer, sin
 
 - [Page Content ](https://demo.primekitaddons.com/widgets/page-content-elementor-widget/) — Inserts the current post’s body into your template with simple, granular styling. Choose left/center/right alignment, set paragraph typography and text/link colors (with hover), and individually style H1–H6 headings (color & typography). Respects WordPress content filters and shortcodes; in the editor it previews with the latest post’s content for context. Perfect for single post or page templates where you want the native content but full design control.
 
+- [Page List](https://demo.primekitaddons.com/widgets/page-list-elementor-widget/) — Build clean navigation menus and link lists with a repeater. Add items with individual title, subtitle, link (URL), icon, and an optional inline badge label with custom text and background colors. Choose List or Grid layout, control responsive vertical spacing with a slider, and add an optional section heading with selectable tag (H2–H6). Per-item solid or gradient background, icon support, and inline badge positioning make it perfect for resource lists, quick-links panels, and page navigation sections.
+
 - [Popular Posts ](https://demo.primekitaddons.com/widgets/popular-posts/) — Displays a compact list of your most popular articles, sortable by comments or views (with view counts read from primekit_post_views). Choose how many posts to show, then fine-tune the layout: stack in a column or row, control gap, and place the thumbnail left/right/top/bottom with matching content and text alignment.
 
 - [Lottie](https://demo.primekitaddons.com/widgets/lottie-animation/) — Embed crisp, lightweight animations from a JSON file (upload or external URL). Fine-tune playback with autoplay, loop (with loop count), reverse, hover actions (play/pause/reverse), and speed control. Choose SVG or Canvas rendering. Style presentation with alignment, responsive width, opacity, and CSS filters—all without code. Perfect for adding micro-interactions, hero accents, and delightful UI motion anywhere on the page.
@@ -248,6 +250,11 @@ Learn more about how [Appsero collects and uses this data](https://appsero.com/p
 
 
 ## Changelog
+
+### 1.3.1
+- Page List Widget Added — repeater-based navigation list with icon, subtitle, inline badge, per-item background, list/grid layout, and responsive vertical spacing slider
+- Card Info Box Widget Improved
+- Template library caching improved — now uses 12-hour transient cache instead of fetching on every panel open
 
 ### 1.2.6
 - Animated Shape Widget Improved

@@ -7,6 +7,7 @@ import Widgets from './pages/Widgets.vue'
 import Extensions from './pages/Extensions.vue'
 import Integrations from './pages/Integrations.vue'
 import Settings from './pages/Settings.vue'
+import License from './pages/License.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -16,6 +17,7 @@ const router = createRouter({
     { path: '/extensions', component: Extensions, name: 'extensions' },
     { path: '/integrations', component: Integrations, name: 'integrations' },
     { path: '/settings', component: Settings, name: 'settings' },
+    { path: '/license', component: License, name: 'license' },
   ],
 })
 

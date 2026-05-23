@@ -28,6 +28,7 @@ class VueAdminPage {
 
         if ( $route === 'widgets' )  return 'admin.php?page=primekit_home&pk_route=widgets';
         if ( $route === 'settings' ) return 'admin.php?page=primekit_home&pk_route=settings';
+        if ( $route === 'license' )  return 'admin.php?page=primekit_home&pk_route=license';
 
         return $submenu_file;
     }
@@ -147,7 +148,8 @@ class VueAdminPage {
         }
 
         if ( $js_file ) {
-            wp_enqueue_script( 'primekit-vue-admin', $url . $js_file, [], PRIMEKIT_VERSION, true );
+            wp_enqueue_script( 'primekit-vue-admin', $url . $js_file, [ 'wp-i18n' ], PRIMEKIT_VERSION, true );
+            wp_set_script_translations( 'primekit-vue-admin', 'primekit-addons', PRIMEKIT_PATH . 'languages' );
         }
         if ( $css_file ) {
             wp_enqueue_style( 'primekit-vue-admin', $url . $css_file, [], PRIMEKIT_VERSION );
@@ -161,6 +163,9 @@ class VueAdminPage {
             'siteUrl'      => get_site_url(),
             'adminUrl'     => admin_url(),
             'iconsUrl'     => PRIMEKIT_ADMIN_ASSETS . '/img/icons/',
+            'isPro'        => class_exists( 'PrimeKitPro\Manager' ),
+            'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
+            'licenseNonce' => wp_create_nonce( 'primekitpro_license_vue_nonce' ),
         ] );
     }
 }

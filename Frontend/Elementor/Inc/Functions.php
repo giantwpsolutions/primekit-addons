@@ -85,16 +85,6 @@ class Functions
             );
         }
 
-        if (!Helpers::is_pro_active()) {
-            $elements_manager->add_category(
-                'primekitpro-category',
-                [
-                    'title' => esc_html__('PrimeKit Pro', 'primekit-addons'), 
-                    'icon' => 'fa fa-plug',
-                ] 
-            );
-        }
-
     }
 
     /**

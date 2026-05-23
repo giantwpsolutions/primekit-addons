@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { api } from '../api/index.js'
 import { widgetTotal } from '../store/widgets.js'
+import { __ } from '../utils/i18n.js'
 
 const activeTab = ref('all')
 const searchQuery = ref('')
@@ -11,112 +12,113 @@ const toast = ref(null)
 
 const iconsBase = window.primekitAdmin?.iconsUrl || ''
 
-const CAT_ORDER = ['General', 'Post & Blog', 'Media & Animation', 'Navigation', 'Forms & Integration', 'Site Elements', 'WooCommerce']
+const CAT_ORDER = [__('General'), __('Post & Blog'), __('Media & Animation'), __('Navigation'), __('Forms & Integration'), __('Site Elements'), __('WooCommerce')]
 
 const allWidgets = ref({
   free: [
-    { key: 'primekit_anim_text_widget_field',      label: 'Animated Text',          icon: 'advanced-animated-text.svg',    cat: 'General',             enabled: true },
-    { key: 'primekit_blockquote_widget_field',      label: 'Blockquote',             icon: 'blockquote.svg',                cat: 'General',             enabled: true },
-    { key: 'primekit_sec_title_widget_field',       label: 'Section Title',          icon: 'section-title.svg',             cat: 'General',             enabled: true },
-    { key: 'primekit_sticker_text_field',           label: 'Sticker Text',           icon: 'sticker-text.svg',              cat: 'General',             enabled: true },
-    { key: 'primekit_cta_widget_field',             label: 'Call To Action',         icon: 'call-to-action.svg',            cat: 'General',             enabled: true },
-    { key: 'primekit_icon_box_widget_field',        label: 'Icon Box',               icon: 'icon-box.svg',                  cat: 'General',             enabled: true },
-    { key: 'primekit_flip_box_widget_field',        label: 'Flip Box',               icon: 'flip-box.svg',                  cat: 'General',             enabled: true },
-    { key: 'primekit_card_info_widget_field',       label: 'Card Info',              icon: 'card-info.svg',                 cat: 'General',             enabled: true },
-    { key: 'primekit_dual_button_widget_field',     label: 'Dual Button',            icon: 'dual-button.svg',               cat: 'General',             enabled: true },
-    { key: 'primekit_pricing_table_widget_field',   label: 'Pricing Table',          icon: 'advanced-pricing-table.svg',    cat: 'General',             enabled: true },
-    { key: 'primekit_counter_up_widget_field',      label: 'Counter Up',             icon: 'counter-up.svg',                cat: 'General',             enabled: true },
-    { key: 'primekit_count_down_widget_field',      label: 'Count Down Timer',       icon: 'count-down-timer.svg',          cat: 'General',             enabled: true },
-    { key: 'primekit_circular_skill_widget_field',  label: 'Circular Skill',         icon: 'advanced-circular-skill.svg',   cat: 'General',             enabled: true },
-    { key: 'primekit_skill_bar_widget_field',       label: 'Skill Bar',              icon: 'skill-bar.svg',                 cat: 'General',             enabled: true },
-    { key: 'primekit_testi_caro_widget_field',      label: 'Testimonial Carousel',   icon: 'testimonial-carousel.svg',      cat: 'General',             enabled: true },
-    { key: 'primekit_team_member_widget_field',     label: 'Team Member',            icon: 'team-member.svg',               cat: 'General',             enabled: true },
-    { key: 'primekit_social_share_widget_field',    label: 'Social Share',           icon: 'social-share.svg',              cat: 'General',             enabled: true },
-    { key: 'primekit_business_hours_field',         label: 'Business Hours',         icon: 'business-hours.svg',            cat: 'General',             enabled: true },
-    { key: 'primekit_portfolio_widget_field',       label: 'Portfolio',              icon: 'portfolio.svg',                 cat: 'General',             enabled: true },
-    { key: 'primekit_cost_estimation_field',        label: 'Cost Estimation',        icon: 'cost-estimation.svg',           cat: 'General',             enabled: true },
-    { key: 'primekit_advanced_list_field',          label: 'Advanced List',          icon: 'advance-list.svg',              cat: 'General',             enabled: true },
-    { key: 'primekit_glass_card_field',             label: 'Glass Card',             icon: 'glass-card.svg',                cat: 'General',             enabled: true },
+    { key: 'primekit_anim_text_widget_field',      label: __('Animated Text'),          icon: 'advanced-animated-text.svg',    cat: __('General'),             enabled: true },
+    { key: 'primekit_blockquote_widget_field',      label: __('Blockquote'),             icon: 'blockquote.svg',                cat: __('General'),             enabled: true },
+    { key: 'primekit_sec_title_widget_field',       label: __('Section Title'),          icon: 'section-title.svg',             cat: __('General'),             enabled: true },
+    { key: 'primekit_sticker_text_field',           label: __('Sticker Text'),           icon: 'sticker-text.svg',              cat: __('General'),             enabled: true },
+    { key: 'primekit_cta_widget_field',             label: __('Call To Action'),         icon: 'call-to-action.svg',            cat: __('General'),             enabled: true },
+    { key: 'primekit_icon_box_widget_field',        label: __('Icon Box'),               icon: 'icon-box.svg',                  cat: __('General'),             enabled: true },
+    { key: 'primekit_flip_box_widget_field',        label: __('Flip Box'),               icon: 'flip-box.svg',                  cat: __('General'),             enabled: true },
+    { key: 'primekit_card_info_widget_field',       label: __('Card Info'),              icon: 'card-info.svg',                 cat: __('General'),             enabled: true },
+    { key: 'primekit_dual_button_widget_field',     label: __('Dual Button'),            icon: 'dual-button.svg',               cat: __('General'),             enabled: true },
+    { key: 'primekit_pricing_table_widget_field',   label: __('Pricing Table'),          icon: 'advanced-pricing-table.svg',    cat: __('General'),             enabled: true },
+    { key: 'primekit_counter_up_widget_field',      label: __('Counter Up'),             icon: 'counter-up.svg',                cat: __('General'),             enabled: true },
+    { key: 'primekit_count_down_widget_field',      label: __('Count Down Timer'),       icon: 'count-down-timer.svg',          cat: __('General'),             enabled: true },
+    { key: 'primekit_circular_skill_widget_field',  label: __('Circular Skill'),         icon: 'advanced-circular-skill.svg',   cat: __('General'),             enabled: true },
+    { key: 'primekit_skill_bar_widget_field',       label: __('Skill Bar'),              icon: 'skill-bar.svg',                 cat: __('General'),             enabled: true },
+    { key: 'primekit_testi_caro_widget_field',      label: __('Testimonial Carousel'),   icon: 'testimonial-carousel.svg',      cat: __('General'),             enabled: true },
+    { key: 'primekit_team_member_widget_field',     label: __('Team Member'),            icon: 'team-member.svg',               cat: __('General'),             enabled: true },
+    { key: 'primekit_social_share_widget_field',    label: __('Social Share'),           icon: 'social-share.svg',              cat: __('General'),             enabled: true },
+    { key: 'primekit_business_hours_field',         label: __('Business Hours'),         icon: 'business-hours.svg',            cat: __('General'),             enabled: true },
+    { key: 'primekit_portfolio_widget_field',       label: __('Portfolio'),              icon: 'portfolio.svg',                 cat: __('General'),             enabled: true },
+    { key: 'primekit_cost_estimation_field',        label: __('Cost Estimation'),        icon: 'cost-estimation.svg',           cat: __('General'),             enabled: true },
+    { key: 'primekit_advanced_list_field',          label: __('Advanced List'),          icon: 'advance-list.svg',              cat: __('General'),             enabled: true },
+    { key: 'primekit_glass_card_field',             label: __('Glass Card'),             icon: 'glass-card.svg',                cat: __('General'),             enabled: true },
 
-    { key: 'primekit_blog_fancy_widget_field',      label: 'Blog Fancy',             icon: 'fancy-blog-posts.svg',          cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_blog_grid_widget_field',       label: 'Blog Grid',              icon: 'blog-posts-grid.svg',           cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_blog_list_widget_field',       label: 'Blog List',              icon: 'blog-posts-list.svg',           cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_author_bio_widget_field',      label: 'Author Bio',             icon: 'post-author-bio.svg',           cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_post_content_widget_field',    label: 'Post Content',           icon: 'post-content.svg',              cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_post_meta_widget_field',       label: 'Post Meta',              icon: 'post-meta-info.svg',            cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_post_title_widget_field',      label: 'Post Title',             icon: 'post-title.svg',                cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_feat_img_widget_field',        label: 'Featured Image',         icon: 'featured-image.svg',            cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_recent_post_widget_field',     label: 'Recent Posts',           icon: 'recent-posts-list.svg',         cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_related_post_widget_field',    label: 'Related Posts',          icon: 'related-posts.svg',             cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_cat_list_widget_field',        label: 'Category List',          icon: 'post-category-list.svg',        cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_tag_info_widget_field',        label: 'Post Tag Info',          icon: 'post-tag-info.svg',             cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_archive_title_field',          label: 'Archive Title',          icon: 'archive-title.svg',             cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_modern_post_grid_field',       label: 'Modern Post Grid',       icon: 'modern-post-grid.svg',          cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_popular_posts_field',          label: 'Popular Posts',          icon: 'popular-post.svg',              cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_fetch_posts_field',            label: 'Fetch Posts',            icon: 'fetch-posts.svg',               cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_posts_slider_field',           label: 'Posts Slider',           icon: 'post-slider.svg',               cat: 'Post & Blog',         enabled: true },
-    { key: 'primekit_comment_form_widget_field',    label: 'Comment Form',           icon: 'comment-form.svg',              cat: 'Post & Blog',         enabled: true },
+    { key: 'primekit_blog_fancy_widget_field',      label: __('Blog Fancy'),             icon: 'fancy-blog-posts.svg',          cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_blog_grid_widget_field',       label: __('Blog Grid'),              icon: 'blog-posts-grid.svg',           cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_blog_list_widget_field',       label: __('Blog List'),              icon: 'blog-posts-list.svg',           cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_author_bio_widget_field',      label: __('Author Bio'),             icon: 'post-author-bio.svg',           cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_post_content_widget_field',    label: __('Post Content'),           icon: 'post-content.svg',              cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_post_meta_widget_field',       label: __('Post Meta'),              icon: 'post-meta-info.svg',            cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_post_title_widget_field',      label: __('Post Title'),             icon: 'post-title.svg',                cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_feat_img_widget_field',        label: __('Featured Image'),         icon: 'featured-image.svg',            cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_recent_post_widget_field',     label: __('Recent Posts'),           icon: 'recent-posts-list.svg',         cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_related_post_widget_field',    label: __('Related Posts'),          icon: 'related-posts.svg',             cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_cat_list_widget_field',        label: __('Category List'),          icon: 'post-category-list.svg',        cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_tag_info_widget_field',        label: __('Post Tag Info'),          icon: 'post-tag-info.svg',             cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_archive_title_field',          label: __('Archive Title'),          icon: 'archive-title.svg',             cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_modern_post_grid_field',       label: __('Modern Post Grid'),       icon: 'modern-post-grid.svg',          cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_popular_posts_field',          label: __('Popular Posts'),          icon: 'popular-post.svg',              cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_fetch_posts_field',            label: __('Fetch Posts'),            icon: 'fetch-posts.svg',               cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_posts_slider_field',           label: __('Posts Slider'),           icon: 'post-slider.svg',               cat: __('Post & Blog'),         enabled: true },
+    { key: 'primekit_comment_form_widget_field',    label: __('Comment Form'),           icon: 'comment-form.svg',              cat: __('Post & Blog'),         enabled: true },
 
-    { key: 'primekit_before_after_widget_field',    label: 'Before After Image',     icon: 'before-after-image.svg',        cat: 'Media & Animation',   enabled: true },
-    { key: 'primekit_img_hover_widget_field',       label: 'Image Hover',            icon: 'image-hover.svg',               cat: 'Media & Animation',   enabled: true },
-    { key: 'primekit_image_gallery_field',          label: 'Image Gallery',          icon: 'image-gallery.svg',             cat: 'Media & Animation',   enabled: true },
-    { key: 'primekit_img_text_scroll_widget_field', label: 'Image & Text Scroll',    icon: 'image-and-text-scroll.svg',     cat: 'Media & Animation',   enabled: true },
-    { key: 'primekit_single_img_scroll_field',      label: 'Single Image Scroll',    icon: 'single-image-scroll.svg',       cat: 'Media & Animation',   enabled: true },
-    { key: 'primekit_lottie_icon_widget_field',     label: 'Lottie Animation',       icon: 'lottie.svg',                    cat: 'Media & Animation',   enabled: true },
-    { key: 'primekit_shape_anim_widget_field',      label: 'Animated Shape',         icon: 'animated-shape.svg',            cat: 'Media & Animation',   enabled: true },
+    { key: 'primekit_before_after_widget_field',    label: __('Before After Image'),     icon: 'before-after-image.svg',        cat: __('Media & Animation'),   enabled: true },
+    { key: 'primekit_img_hover_widget_field',       label: __('Image Hover'),            icon: 'image-hover.svg',               cat: __('Media & Animation'),   enabled: true },
+    { key: 'primekit_image_gallery_field',          label: __('Image Gallery'),          icon: 'image-gallery.svg',             cat: __('Media & Animation'),   enabled: true },
+    { key: 'primekit_img_text_scroll_widget_field', label: __('Image & Text Scroll'),    icon: 'image-and-text-scroll.svg',     cat: __('Media & Animation'),   enabled: true },
+    { key: 'primekit_single_img_scroll_field',      label: __('Single Image Scroll'),    icon: 'single-image-scroll.svg',       cat: __('Media & Animation'),   enabled: true },
+    { key: 'primekit_lottie_icon_widget_field',     label: __('Lottie Animation'),       icon: 'lottie.svg',                    cat: __('Media & Animation'),   enabled: true },
+    { key: 'primekit_shape_anim_widget_field',      label: __('Animated Shape'),         icon: 'animated-shape.svg',            cat: __('Media & Animation'),   enabled: true },
 
-    { key: 'primekit_breadcrumb_widget_field',      label: 'Breadcrumb',             icon: 'breadcrumb.svg',                cat: 'Navigation',          enabled: true },
-    { key: 'primekit_wp_menu_widget_field',         label: 'WordPress Menu',         icon: 'wordpress-menu.svg',            cat: 'Navigation',          enabled: true },
-    { key: 'primekit_search_form_widget_field',     label: 'Search Form',            icon: 'search-form.svg',               cat: 'Navigation',          enabled: true },
-    { key: 'primekit_search_icon_widget_field',     label: 'Search Icon',            icon: 'search-icon.svg',               cat: 'Navigation',          enabled: true },
-    { key: 'primekit_back_top_widget_field',        label: 'Back To Top',            icon: 'back-to-top-button.svg',        cat: 'Navigation',          enabled: true },
-    { key: 'primekit_call_button_widget_field',     label: 'Sticky Call Button',     icon: 'call-icon.svg',                 cat: 'Navigation',          enabled: true },
+    { key: 'primekit_breadcrumb_widget_field',      label: __('Breadcrumb'),             icon: 'breadcrumb.svg',                cat: __('Navigation'),          enabled: true },
+    { key: 'primekit_page_list_widget_field',       label: __('Page List'),              icon: 'page-list.svg',                 cat: __('Navigation'),          enabled: true },
+    { key: 'primekit_wp_menu_widget_field',         label: __('WordPress Menu'),         icon: 'wordpress-menu.svg',            cat: __('Navigation'),          enabled: true },
+    { key: 'primekit_search_form_widget_field',     label: __('Search Form'),            icon: 'search-form.svg',               cat: __('Navigation'),          enabled: true },
+    { key: 'primekit_search_icon_widget_field',     label: __('Search Icon'),            icon: 'search-icon.svg',               cat: __('Navigation'),          enabled: true },
+    { key: 'primekit_back_top_widget_field',        label: __('Back To Top'),            icon: 'back-to-top-button.svg',        cat: __('Navigation'),          enabled: true },
+    { key: 'primekit_call_button_widget_field',     label: __('Sticky Call Button'),     icon: 'call-icon.svg',                 cat: __('Navigation'),          enabled: true },
 
-    { key: 'primekit_contact_form7_widget_field',   label: 'Contact Form 7',         icon: 'contact-form-7.svg',            cat: 'Forms & Integration', enabled: true },
-    { key: 'primekit_gravity_form_field',           label: 'Gravity Form',           icon: 'gravity-form.svg',              cat: 'Forms & Integration', enabled: true },
-    { key: 'primekit_mailchimp_switch_field',       label: 'MailChimp',              icon: 'mailchimp.svg',                 cat: 'Forms & Integration', enabled: true },
-    { key: 'primekit_contact_info_widget_field',    label: 'Contact & Social Info',  icon: 'contact-and-social-info.svg',   cat: 'Forms & Integration', enabled: true },
+    { key: 'primekit_contact_form7_widget_field',   label: __('Contact Form 7'),         icon: 'contact-form-7.svg',            cat: __('Forms & Integration'), enabled: true },
+    { key: 'primekit_gravity_form_field',           label: __('Gravity Form'),           icon: 'gravity-form.svg',              cat: __('Forms & Integration'), enabled: true },
+    { key: 'primekit_mailchimp_switch_field',       label: __('MailChimp'),              icon: 'mailchimp.svg',                 cat: __('Forms & Integration'), enabled: true },
+    { key: 'primekit_contact_info_widget_field',    label: __('Contact & Social Info'),  icon: 'contact-and-social-info.svg',   cat: __('Forms & Integration'), enabled: true },
 
-    { key: 'primekit_site_logo_widget_field',       label: 'Site Logo',              icon: 'site-logo.svg',                 cat: 'Site Elements',       enabled: true },
-    { key: 'primekit_site_title_tagline_field',     label: 'Site Title & Tagline',   icon: 'site-title-and-tagline.svg',    cat: 'Site Elements',       enabled: true },
-    { key: 'primekit_page_title_widget_field',      label: 'Page Title',             icon: 'page-title.svg',                cat: 'Site Elements',       enabled: true },
-    { key: 'primekit_page_content_widget_field',    label: 'Page Content',           icon: 'page-content.svg',              cat: 'Site Elements',       enabled: true },
-    { key: 'primekit_copyright_field',              label: 'Copyright',              icon: 'copyright.svg',                 cat: 'Site Elements',       enabled: true },
-    { key: 'primekit_template_slider_field',        label: 'Template Slider',        icon: 'template-slider.svg',           cat: 'Site Elements',       enabled: true },
-    { key: 'primekit_loading_screen_widget_field',  label: 'Loading Screen',         icon: 'loading-screen.svg',            cat: 'Site Elements',       enabled: true },
-    { key: 'primekit_popup_widget_field',           label: 'Popup',                  icon: 'popup.svg',                     cat: 'Site Elements',       enabled: true },
+    { key: 'primekit_site_logo_widget_field',       label: __('Site Logo'),              icon: 'site-logo.svg',                 cat: __('Site Elements'),       enabled: true },
+    { key: 'primekit_site_title_tagline_field',     label: __('Site Title & Tagline'),   icon: 'site-title-and-tagline.svg',    cat: __('Site Elements'),       enabled: true },
+    { key: 'primekit_page_title_widget_field',      label: __('Page Title'),             icon: 'page-title.svg',                cat: __('Site Elements'),       enabled: true },
+    { key: 'primekit_page_content_widget_field',    label: __('Page Content'),           icon: 'page-content.svg',              cat: __('Site Elements'),       enabled: true },
+    { key: 'primekit_copyright_field',              label: __('Copyright'),              icon: 'copyright.svg',                 cat: __('Site Elements'),       enabled: true },
+    { key: 'primekit_template_slider_field',        label: __('Template Slider'),        icon: 'template-slider.svg',           cat: __('Site Elements'),       enabled: true },
+    { key: 'primekit_loading_screen_widget_field',  label: __('Loading Screen'),         icon: 'loading-screen.svg',            cat: __('Site Elements'),       enabled: true },
+    { key: 'primekit_popup_widget_field',           label: __('Popup'),                  icon: 'popup.svg',                     cat: __('Site Elements'),       enabled: true },
   ],
   woo: [
-    { key: 'primekit_wc_add_to_cart_field',      label: 'Product Add To Cart',          icon: 'add-to-cart.svg',                  cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_cart_icon_field',        label: 'Product Cart Icon',            icon: 'cart-icon.svg',                    cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_cart_page_field',        label: 'Product Cart Page',            icon: 'cart-page.svg',                    cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_checkout_field',         label: 'Product Checkout',             icon: 'checkout-page.svg',                cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_product_image_field',    label: 'Product Image',                icon: 'product-image.svg',                cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_product_meta_field',     label: 'Product Meta',                 icon: 'product-meta.svg',                 cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_product_price_field',    label: 'Product Price',                icon: 'product-pricing.svg',              cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_related_field',          label: 'Product Related',              icon: 'related-product.svg',              cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_short_desc_field',       label: 'Product Short Description',    icon: 'product-short-description.svg',    cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_product_tabs_field',     label: 'Product Tabs',                 icon: 'product-tabs-data.svg',            cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_product_title_field',    label: 'Product Title',                icon: 'product-title.svg',                cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_account_field',          label: 'WooCommerce Account',          icon: 'my-account.svg',                   cat: 'WooCommerce', enabled: true },
-    { key: 'primekit_wc_breadcrumb_field',       label: 'WooCommerce Breadcrumb',       icon: 'WooCommerce-breadcrumb.svg',       cat: 'WooCommerce', enabled: true },
+    { key: 'primekit_wc_add_to_cart_field',      label: __('Product Add To Cart'),          icon: 'add-to-cart.svg',                  cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_cart_icon_field',        label: __('Product Cart Icon'),            icon: 'cart-icon.svg',                    cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_cart_page_field',        label: __('Product Cart Page'),            icon: 'cart-page.svg',                    cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_checkout_field',         label: __('Product Checkout'),             icon: 'checkout-page.svg',                cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_product_image_field',    label: __('Product Image'),                icon: 'product-image.svg',                cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_product_meta_field',     label: __('Product Meta'),                 icon: 'product-meta.svg',                 cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_product_price_field',    label: __('Product Price'),                icon: 'product-pricing.svg',              cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_related_field',          label: __('Product Related'),              icon: 'related-product.svg',              cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_short_desc_field',       label: __('Product Short Description'),    icon: 'product-short-description.svg',    cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_product_tabs_field',     label: __('Product Tabs'),                 icon: 'product-tabs-data.svg',            cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_product_title_field',    label: __('Product Title'),                icon: 'product-title.svg',                cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_account_field',          label: __('WooCommerce Account'),          icon: 'my-account.svg',                   cat: __('WooCommerce'), enabled: true },
+    { key: 'primekit_wc_breadcrumb_field',       label: __('WooCommerce Breadcrumb'),       icon: 'WooCommerce-breadcrumb.svg',       cat: __('WooCommerce'), enabled: true },
   ],
   pro: [
-    { key: 'primekit_advanced_accordion_locked_widget_field',       label: 'Advanced Accordion',       icon: 'advance-accordion.svg',            cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_advanced_pricing_table_locked_widget_field',   label: 'Advanced Pricing Table',   icon: 'advanced-pricing-table.svg',       cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_advanced_tab_locked_widget_field',             label: 'Advanced Tabs',            icon: 'advanced-tab.svg',                 cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_email_signature_locked_widget_field',          label: 'Email Signature',          icon: 'email-signature.svg',              cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_jobs_locked_widget_field',                     label: 'Jobs',                     icon: 'jobs.svg',                         cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_project_progress_track_locked_widget_field',   label: 'Project Progress Tracker', icon: 'project-progress-tracker.svg',     cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_resources_locked_widget_field',                label: 'Resources',                icon: 'resources.svg',                    cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_revenue_growth_graphs_locked_widget_field',    label: 'Revenue Growth Graph',     icon: 'revenue-growth-graphs.svg',        cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_team_member_carousel_locked_widget_field',     label: 'Team Member Carousel',     icon: 'team-member-carousel.svg',         cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_timeline_milestone_locked_widget_field',       label: 'Timeline Milestone',       icon: 'timeline-milestone.svg',           cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_video_testimonials_locked_widget_field',       label: 'Video Testimonials',       icon: 'video-testimonials.svg',           cat: 'General',             enabled: false, pro: true },
-    { key: 'primekit_lottie_locked_widget_field',                   label: 'Lottie Animation',         icon: 'lottie.svg',                       cat: 'Media & Animation',   enabled: false, pro: true },
-    { key: 'primekit_resource_form_locked_widget_field',            label: 'Resource Form',            icon: 'resource-form.svg',                cat: 'Forms & Integration', enabled: false, pro: true },
-    { key: 'primekit_whatsapp_chat_locked_widget_field',            label: 'WhatsApp Chat',            icon: 'WhatsApps-Chat.svg',               cat: 'Forms & Integration', enabled: false, pro: true },
-    { key: 'primekit_protected_content_locked_widget_field',        label: 'Protected Content',        icon: 'protected-contents.svg',           cat: 'Site Elements',       enabled: false, pro: true },
+    { key: 'primekit_advanced_accordion_locked_widget_field',       label: __('Advanced Accordion'),       icon: 'advance-accordion.svg',            cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_advanced_pricing_table_locked_widget_field',   label: __('Advanced Pricing Table'),   icon: 'advanced-pricing-table.svg',       cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_advanced_tab_locked_widget_field',             label: __('Advanced Tabs'),            icon: 'advanced-tab.svg',                 cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_email_signature_locked_widget_field',          label: __('Email Signature'),          icon: 'email-signature.svg',              cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_jobs_locked_widget_field',                     label: __('Jobs'),                     icon: 'jobs.svg',                         cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_project_progress_track_locked_widget_field',   label: __('Project Progress Tracker'), icon: 'project-progress-tracker.svg',     cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_resources_locked_widget_field',                label: __('Resources'),                icon: 'resources.svg',                    cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_revenue_growth_graphs_locked_widget_field',    label: __('Revenue Growth Graph'),     icon: 'revenue-growth-graphs.svg',        cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_team_member_carousel_locked_widget_field',     label: __('Team Member Carousel'),     icon: 'team-member-carousel.svg',         cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_timeline_milestone_locked_widget_field',       label: __('Timeline Milestone'),       icon: 'timeline-milestone.svg',           cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_video_testimonials_locked_widget_field',       label: __('Video Testimonials'),       icon: 'video-testimonials.svg',           cat: __('General'),             enabled: false, pro: true },
+    { key: 'primekit_lottie_locked_widget_field',                   label: __('Lottie Animation'),         icon: 'lottie.svg',                       cat: __('Media & Animation'),   enabled: false, pro: true },
+    { key: 'primekit_resource_form_locked_widget_field',            label: __('Resource Form'),            icon: 'resource-form.svg',                cat: __('Forms & Integration'), enabled: false, pro: true },
+    { key: 'primekit_whatsapp_chat_locked_widget_field',            label: __('WhatsApp Chat'),            icon: 'WhatsApps-Chat.svg',               cat: __('Forms & Integration'), enabled: false, pro: true },
+    { key: 'primekit_protected_content_locked_widget_field',        label: __('Protected Content'),        icon: 'protected-contents.svg',           cat: __('Site Elements'),       enabled: false, pro: true },
   ],
 })
 
@@ -143,9 +145,9 @@ const tabList = computed(() => {
   const w = allWidgets.value.woo
   const p = allWidgets.value.pro
   return [
-    { key: 'all',  label: 'All',  count: f.length + w.length + p.length },
-    { key: 'free', label: 'Free', count: f.length + w.length },
-    { key: 'pro',  label: 'Pro',  count: p.length },
+    { key: 'all',  label: __('All'),  count: f.length + w.length + p.length },
+    { key: 'free', label: __('Free'), count: f.length + w.length },
+    { key: 'pro',  label: __('Pro'),  count: p.length },
   ]
 })
 
@@ -168,7 +170,7 @@ const totalCount  = computed(() => tabWidgets.value.filter(w => !w.pro).length)
 const groupedWidgets = computed(() => {
   const map = {}
   for (const w of currentWidgets.value) {
-    const cat = w.cat || 'General'
+    const cat = w.cat || __('General')
     if (!map[cat]) map[cat] = []
     map[cat].push(w)
   }
@@ -182,10 +184,10 @@ async function toggleWidget(widget) {
   widget.enabled = !widget.enabled
   try {
     await api.toggleWidget(widget.key, widget.enabled)
-    showToast(`${widget.label} ${widget.enabled ? 'enabled' : 'disabled'}`)
+    showToast(`${widget.label} ${widget.enabled ? __('enabled') : __('disabled')}`)
   } catch {
     widget.enabled = prev
-    showToast('Failed to save. Please try again.', 'error')
+    showToast(__('Failed to save. Please try again.'), 'error')
   } finally {
     saving.value = null
   }
@@ -220,21 +222,21 @@ function showToast(msg, type = 'success') {
     <!-- Header -->
     <div class="pk-flex pk-items-center pk-justify-between">
       <div>
-        <h2 class="pk-text-lg pk-font-bold pk-text-gray-800 pk-m-0">Widgets</h2>
-        <p class="pk-text-sm pk-text-gray-500 pk-m-0 pk-mt-0.5">Enable or disable individual Elementor widgets</p>
+        <h2 class="pk-text-lg pk-font-bold pk-text-gray-800 pk-m-0">{{ __('Widgets') }}</h2>
+        <p class="pk-text-sm pk-text-gray-500 pk-m-0 pk-mt-0.5">{{ __('Enable or disable individual Elementor widgets') }}</p>
       </div>
       <div class="pk-flex pk-items-center pk-gap-2">
         <button @click="disableAll"
                 class="pk-px-3 pk-py-1.5 pk-text-sm pk-rounded-lg pk-border pk-border-gray-200 pk-text-gray-600 pk-bg-white pk-transition-colors"
                 style="cursor:pointer"
                 onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
-          Disable All
+          {{ __('Disable All') }}
         </button>
         <button @click="enableAll"
                 class="pk-px-3 pk-py-1.5 pk-text-sm pk-rounded-lg pk-text-white pk-transition-colors"
                 style="background:#6c63ff;cursor:pointer;border:none"
                 onmouseover="this.style.background='#5a52e0'" onmouseout="this.style.background='#6c63ff'">
-          Enable All
+          {{ __('Enable All') }}
         </button>
       </div>
     </div>
@@ -261,7 +263,7 @@ function showToast(msg, type = 'success') {
              fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="transform:translateY(-50%)">
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
-        <input v-model="searchQuery" type="text" placeholder="Search widgets..."
+        <input v-model="searchQuery" type="text" :placeholder="__('Search widgets...')"
                class="pk-pl-9 pk-pr-4 pk-py-1.5 pk-text-sm pk-border pk-border-gray-200 pk-rounded-lg pk-outline-none"
                style="width:200px;background:#f9fafb;color:#374151"
                onfocus="this.style.borderColor='#6c63ff';this.style.background='white'"
@@ -272,7 +274,7 @@ function showToast(msg, type = 'success') {
     <!-- Active count bar -->
     <div class="pk-flex pk-items-center pk-gap-2 pk-px-1">
       <span class="pk-text-sm pk-text-gray-500">
-        <strong class="pk-text-gray-800">{{ activeCount }}</strong> of {{ totalCount }} active
+        <strong class="pk-text-gray-800">{{ activeCount }}</strong> {{ __('of') }} {{ totalCount }} {{ __('active') }}
       </span>
       <div class="pk-flex-1 pk-h-1.5 pk-bg-gray-100 pk-rounded-full pk-max-w-xs">
         <div class="pk-h-1.5 pk-rounded-full pk-transition-all" style="background:#6c63ff"
@@ -291,7 +293,7 @@ function showToast(msg, type = 'success') {
 
       <!-- Empty state -->
       <div v-if="!currentWidgets.length" class="pk-py-12 pk-text-center pk-text-gray-400">
-        <p class="pk-text-sm">No widgets found for "{{ searchQuery }}"</p>
+        <p class="pk-text-sm">{{ __('No widgets found for') }} "{{ searchQuery }}"</p>
       </div>
 
       <div v-for="group in groupedWidgets" :key="group.label">
@@ -301,7 +303,7 @@ function showToast(msg, type = 'success') {
             {{ group.label }}
           </h3>
           <div style="flex:1;height:1px;background:#e5e7eb;"></div>
-          <span style="font-size:11px;color:#9ca3af;white-space:nowrap;">{{ group.widgets.length }} widgets</span>
+          <span style="font-size:11px;color:#9ca3af;white-space:nowrap;">{{ group.widgets.length }} {{ __('widgets') }}</span>
         </div>
 
         <!-- Widget list -->

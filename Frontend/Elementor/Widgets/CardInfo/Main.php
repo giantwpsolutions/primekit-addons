@@ -72,9 +72,6 @@ class Main extends Widget_Base
 					'image' => esc_html__('Image', 'primekit-addons'),
 					'icon' => esc_html__('Icon', 'primekit-addons'),
 				],
-				'condition' => [
-					'primekit_elementor_card_info_select_style' => 'style-one',
-				],
 			]
 		);
 
@@ -104,6 +101,7 @@ class Main extends Widget_Base
 					'url' => \Elementor\Utils::get_placeholder_image_src(),
 				],
 				'condition' => [
+					'primekit_elementor_card_info_type' => 'image',
 					'primekit_elementor_card_info_select_style' => 'style-two',
 				],
 			]
@@ -142,9 +140,12 @@ class Main extends Widget_Base
 			[
 				'label' => esc_html__('Choose Icon', 'primekit-addons'),
 				'type' => \Elementor\Controls_Manager::ICONS,
+				'default' => [
+					'value'   => 'fas fa-star',
+					'library' => 'fa-solid',
+				],
 				'condition' => [
 					'primekit_elementor_card_info_type' => 'icon',
-					'primekit_elementor_card_info_select_style' => 'style-one',
 				],
 			]
 		);
@@ -190,13 +191,29 @@ class Main extends Widget_Base
 			]
 		);
 
+		//button show/hide
+		$this->add_control(
+			'primekit_elementor_card_info_btn_show',
+			[
+				'label'        => esc_html__('Show Button', 'primekit-addons'),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__('Yes', 'primekit-addons'),
+				'label_off'    => esc_html__('No', 'primekit-addons'),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+			]
+		);
+
 		//Button Text
 		$this->add_control(
 			'primekit_elementor_card_info_btn_text',
 			[
-				'label' => esc_html__('Button Text', 'primekit-addons'),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__('Read More', 'primekit-addons'),
+				'label'     => esc_html__('Button Text', 'primekit-addons'),
+				'type'      => \Elementor\Controls_Manager::TEXT,
+				'default'   => esc_html__('Read More', 'primekit-addons'),
+				'condition' => [
+					'primekit_elementor_card_info_btn_show' => 'yes',
+				],
 			]
 		);
 
@@ -216,6 +233,9 @@ class Main extends Widget_Base
 					'nofollow' => false,
 				],
 				'label_block' => true,
+				'condition' => [
+					'primekit_elementor_card_info_btn_show' => 'yes',
+				],
 			]
 		);
 
@@ -229,6 +249,9 @@ class Main extends Widget_Base
 				'btn_off' => esc_html__('No', 'primekit-addons'),
 				'return_value' => 'yes',
 				'default' => 'btn_off',
+				'condition' => [
+					'primekit_elementor_card_info_btn_show' => 'yes',
+				],
 			]
 		);
 
@@ -239,6 +262,7 @@ class Main extends Widget_Base
 				'label' => esc_html__('Button Icon', 'primekit-addons'),
 				'type' => \Elementor\Controls_Manager::ICONS,
 				'condition' => [
+					'primekit_elementor_card_info_btn_show'        => 'yes',
 					'primekit_elementor_card_info_btn_icon_switch' => 'yes',
 				],
 			]
@@ -314,6 +338,19 @@ class Main extends Widget_Base
 				'name' => 'primekit_elementor_card_box_shadow',
 				'label' => esc_html__('Box Shadow', 'primekit-addons'),
 				'selector' => '{{WRAPPER}} .primekit-card-info-wrap',
+			]
+		);
+
+		//box padding
+		$this->add_responsive_control(
+			'primekit_elementor_card_box_padding',
+			[
+				'label'      => esc_html__('Padding', 'primekit-addons'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors'  => [
+					'{{WRAPPER}} .primekit-card-info-wrap' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
 			]
 		);
 
@@ -925,8 +962,11 @@ class Main extends Widget_Base
 		$this->start_controls_section(
 			'primekit_elementor_card_btn_style',
 			[
-				'label' => esc_html__('Button Style', 'primekit-addons'),
-				'tab' => Controls_Manager::TAB_STYLE,
+				'label'     => esc_html__('Button Style', 'primekit-addons'),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'primekit_elementor_card_info_btn_show' => 'yes',
+				],
 			]
 		);
 

@@ -95,43 +95,47 @@ class Library_Source extends Source_Base
 
     private static function request_library_data($force_update = false)
     {
-        $data = get_option(self::LIBRARY_CACHE_KEY);
+        $transient_key = self::LIBRARY_CACHE_KEY . '_transient';
 
-        if (!empty($data) && !$force_update) {
-            return $data;
+        if (!$force_update) {
+            $cached = get_transient($transient_key);
+            if (!empty($cached)) {
+                return $cached;
+            }
         }
 
-        // Always use remote API
         $response = wp_remote_get(self::API_TEMPLATES_INFO_URL, [
-            'timeout' => 30,
-            'sslverify' => false
+            'timeout'   => 30,
+            'sslverify' => false,
         ]);
 
         if (!is_wp_error($response) && 200 === wp_remote_retrieve_response_code($response)) {
             $data = json_decode(wp_remote_retrieve_body($response), true);
 
             if (!empty($data) && is_array($data)) {
+                set_transient($transient_key, $data, 12 * HOUR_IN_SECONDS);
                 update_option(self::LIBRARY_CACHE_KEY, $data, false);
                 return $data;
             }
         }
 
-        // Return empty array if remote request fails
-        update_option(self::LIBRARY_CACHE_KEY, []);
-        return false;
+        // Fallback to DB cache if remote fails
+        $data = get_option(self::LIBRARY_CACHE_KEY);
+        return !empty($data) ? $data : false;
     }
 
-    public static function get_library_data($force_update = true)
+    public static function get_library_data($force_update = false)
     {
         self::request_library_data($force_update);
 
-        $data = get_option(self::LIBRARY_CACHE_KEY);
+        $transient_key = self::LIBRARY_CACHE_KEY . '_transient';
+        $data = get_transient($transient_key);
 
         if (empty($data)) {
-            return [];
+            $data = get_option(self::LIBRARY_CACHE_KEY);
         }
 
-        return $data;
+        return !empty($data) ? $data : [];
     }
 
     public function get_item($template_id)

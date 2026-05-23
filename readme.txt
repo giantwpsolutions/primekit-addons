@@ -6,7 +6,7 @@ Contributors: giantwpsolutions, developerhabib
 Tags: Elementor Addons, Elementor Widgets, Elementor, Theme Builder, Elementor Builder
 Requires at least: 5.4  
 Tested up to: 6.9
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -120,6 +120,8 @@ Our theme Builder makes it simple to design your website’s header, footer, sin
 - [Post Slider ](https://demo.primekitaddons.com/widgets/posts-slider-widget/) — Swiper carousel for posts with meta. Control slides, loop, and nav.
 
 - [Page Content ](https://demo.primekitaddons.com/widgets/page-content-elementor-widget/) — Inserts current post body with granular styling. Respects shortcodes/filters.
+
+- [Page List 🆕](https://demo.primekitaddons.com/widgets/page-list-elementor-widget/) — Repeater-based navigation list with icon, subtitle, inline badge, and per-item link. List or Grid layout with responsive vertical spacing slider.
 
 - [Popular Posts ](https://demo.primekitaddons.com/widgets/popular-posts/) — Popular list by comments/views. Compact layout with thumbnail options.
 
@@ -269,6 +271,11 @@ Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without
 Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
 
 == Changelog ==
+
+= 1.3.1 =
+- 🆕 Page List Widget Added — repeater-based navigation list with icon, subtitle, inline badge, per-item background, and responsive vertical spacing
+- Card Info Box Widget Improved
+- Template library caching improved — 12-hour transient cache prevents unnecessary API calls on every panel open
 
 = 1.3.0 =
 - Admin UI: Theme Builder and Header/Footer modals fully redesigned with modern layout

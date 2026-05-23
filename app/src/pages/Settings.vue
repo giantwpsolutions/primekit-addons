@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { api } from '../api/index.js'
+import { __ } from '../utils/i18n.js'
 
 const loading = ref(true)
 const saving = ref(false)
@@ -37,9 +38,9 @@ function showToast(msg, type = 'success') {
 async function savePerformanceMode() {
   try {
     await api.saveSettings({ performanceMode: performanceMode.value })
-    showToast(`Performance mode set to "${performanceMode.value}"`)
+    showToast(`${__('Performance mode set to')} "${performanceMode.value}"`)
   } catch {
-    showToast('Failed to save. Please try again.', 'error')
+    showToast(__('Failed to save. Please try again.'), 'error')
   }
 }
 
@@ -51,10 +52,10 @@ async function save() {
       performanceMode: performanceMode.value,
     })
     saved.value = true
-    showToast('Settings saved successfully!')
+    showToast(__('Settings saved successfully!'))
     setTimeout(() => saved.value = false, 2000)
   } catch {
-    showToast('Failed to save settings.', 'error')
+    showToast(__('Failed to save settings.'), 'error')
   } finally {
     saving.value = false
   }
@@ -63,13 +64,13 @@ async function save() {
 const modes = [
   {
     key: 'standard',
-    title: 'Standard',
-    desc: 'Loads only active widget assets. Recommended for most sites.',
+    title: __('Standard'),
+    desc: __('Loads only active widget assets. Recommended for most sites.'),
   },
   {
     key: 'aggressive',
-    title: 'Aggressive',
-    desc: 'Defers all non-critical scripts. Best for performance scores.',
+    title: __('Aggressive'),
+    desc: __('Defers all non-critical scripts. Best for performance scores.'),
   },
 ]
 </script>
@@ -78,8 +79,8 @@ const modes = [
   <div class="pk-space-y-5">
     <div class="pk-flex pk-items-center pk-justify-between">
       <div>
-        <h2 class="pk-text-lg pk-font-bold pk-text-gray-800 pk-m-0">Settings</h2>
-        <p class="pk-text-sm pk-text-gray-500 pk-m-0 pk-mt-0.5">General plugin configuration</p>
+        <h2 class="pk-text-lg pk-font-bold pk-text-gray-800 pk-m-0">{{ __('Settings') }}</h2>
+        <p class="pk-text-sm pk-text-gray-500 pk-m-0 pk-mt-0.5">{{ __('General plugin configuration') }}</p>
       </div>
       <button @click="save" :disabled="saving"
               class="pk-flex pk-items-center pk-gap-2 pk-px-4 pk-py-2 pk-rounded-lg pk-text-sm pk-font-medium pk-text-white pk-transition-all"
@@ -88,7 +89,7 @@ const modes = [
         <svg v-if="saved" class="pk-w-4 pk-h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <polyline points="20 6 9 17 4 12"/>
         </svg>
-        {{ saved ? 'Saved!' : saving ? 'Saving…' : 'Save Changes' }}
+        {{ saved ? __('Saved!') : saving ? __('Saving…') : __('Save Changes') }}
       </button>
     </div>
 
@@ -101,8 +102,8 @@ const modes = [
       <!-- Performance Mode -->
       <div class="pk-bg-white pk-rounded-xl pk-border pk-border-gray-100 pk-overflow-hidden">
         <div class="pk-px-6 pk-py-4 pk-border-b pk-border-gray-100">
-          <h3 class="pk-text-sm pk-font-semibold pk-text-gray-800 pk-m-0">Performance Mode</h3>
-          <p class="pk-text-xs pk-text-gray-500 pk-m-0 pk-mt-0.5">Control how widget assets are loaded on the frontend</p>
+          <h3 class="pk-text-sm pk-font-semibold pk-text-gray-800 pk-m-0">{{ __('Performance Mode') }}</h3>
+          <p class="pk-text-xs pk-text-gray-500 pk-m-0 pk-mt-0.5">{{ __('Control how widget assets are loaded on the frontend') }}</p>
         </div>
         <div class="pk-px-6 pk-py-5 pk-space-y-3">
           <label v-for="mode in modes" :key="mode.key"
@@ -116,7 +117,7 @@ const modes = [
                 <span style="font-size:14px;font-weight:600;color:#1f2937;">{{ mode.title }}</span>
                 <span v-if="performanceMode === mode.key"
                       style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:#6c63ff;color:white;letter-spacing:0.3px;">
-                  Active
+                  {{ __('Active') }}
                 </span>
               </div>
               <p style="margin:4px 0 0;font-size:12px;color:#6b7280;line-height:1.5;">{{ mode.desc }}</p>
@@ -128,12 +129,12 @@ const modes = [
       <!-- Cost Estimation -->
       <div class="pk-bg-white pk-rounded-xl pk-border pk-border-gray-100 pk-overflow-hidden">
         <div class="pk-px-6 pk-py-4 pk-border-b pk-border-gray-100">
-          <h3 class="pk-text-sm pk-font-semibold pk-text-gray-800 pk-m-0">Cost Estimation Widget</h3>
-          <p class="pk-text-xs pk-text-gray-500 pk-m-0 pk-mt-0.5">Configure package labels for the cost estimator</p>
+          <h3 class="pk-text-sm pk-font-semibold pk-text-gray-800 pk-m-0">{{ __('Cost Estimation Widget') }}</h3>
+          <p class="pk-text-xs pk-text-gray-500 pk-m-0 pk-mt-0.5">{{ __('Configure package labels for the cost estimator') }}</p>
         </div>
         <div class="pk-px-6 pk-py-5 pk-space-y-4">
           <div v-for="(n, i) in [1,2,3]" :key="n" class="pk-flex pk-items-center pk-gap-4">
-            <label class="pk-text-sm pk-font-medium pk-text-gray-700 pk-w-28 pk-flex-shrink-0">Package {{ n }}</label>
+            <label class="pk-text-sm pk-font-medium pk-text-gray-700 pk-w-28 pk-flex-shrink-0">{{ __('Package') }} {{ n }}</label>
             <input v-model="settings[`cost_estimation_package_${n}`]" type="text"
                    :placeholder="`e.g. ${['Low','Medium','High'][i]}`"
                    class="pk-flex-1 pk-px-3 pk-py-2 pk-text-sm pk-border pk-border-gray-200 pk-rounded-lg pk-outline-none pk-max-w-xs"
@@ -144,13 +145,13 @@ const modes = [
 
       <!-- About -->
       <div class="pk-bg-white pk-rounded-xl pk-border pk-border-gray-100 pk-p-6">
-        <h3 class="pk-text-sm pk-font-semibold pk-text-gray-800 pk-m-0 pk-mb-3">About PrimeKit</h3>
+        <h3 class="pk-text-sm pk-font-semibold pk-text-gray-800 pk-m-0 pk-mb-3">{{ __('About PrimeKit') }}</h3>
         <div class="pk-grid pk-grid-cols-2 pk-gap-3">
           <div v-for="item in [
-            { label: 'Plugin Version',   value: sysInfo.plugin },
-            { label: 'Elementor Version', value: sysInfo.elementor },
-            { label: 'WordPress Version', value: sysInfo.wp },
-            { label: 'PHP Version',       value: sysInfo.php },
+            { label: __('Plugin Version'),   value: sysInfo.plugin },
+            { label: __('Elementor Version'), value: sysInfo.elementor },
+            { label: __('WordPress Version'), value: sysInfo.wp },
+            { label: __('PHP Version'),       value: sysInfo.php },
           ]" :key="item.label"
                class="pk-flex pk-items-center pk-justify-between pk-p-3 pk-rounded-lg pk-bg-gray-50">
             <span class="pk-text-xs pk-text-gray-500">{{ item.label }}</span>

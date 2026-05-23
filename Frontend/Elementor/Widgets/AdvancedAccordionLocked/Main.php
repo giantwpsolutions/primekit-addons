@@ -33,7 +33,7 @@ class Main extends Widget_Base
     public function get_categories()
     {
         // Put proxies under a clear “Pro” bucket
-        return ['primekitpro-category'];
+        return ['primekit-category'];
     }
 
     public function get_keywords()

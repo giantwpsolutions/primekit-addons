@@ -282,7 +282,7 @@ class RestAPI
             'primekit_modern_post_grid_field', 'primekit_popular_posts_field',
             'primekit_fetch_posts_field', 'primekit_posts_slider_field',
             'primekit_copyright_field', 'primekit_advanced_list_field',
-            'primekit_glass_card_field',
+            'primekit_glass_card_field', 'primekit_page_list_widget_field',
         ];
     }
 

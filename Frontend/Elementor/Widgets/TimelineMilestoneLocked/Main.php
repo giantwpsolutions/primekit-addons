@@ -24,7 +24,7 @@ class Main extends Widget_Base {
     }
 
     public function get_categories() {
-        return ['primekitpro-category'];
+        return ['primekit-category'];
     }
 
     public function get_keywords() {

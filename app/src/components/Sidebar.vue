@@ -2,16 +2,20 @@
 import { RouterLink, useRoute } from 'vue-router'
 import logo from '../assets/primekit-logo.svg'
 import { widgetTotal } from '../store/widgets.js'
+import { __ } from '../utils/i18n.js'
 
 const route = useRoute()
 const version = window.primekitAdmin?.version || '1.0.0'
 
+const isPro = window.primekitAdmin?.isPro || false
+
 const navItems = [
-  { to: '/', label: 'Dashboard', icon: 'grid' },
-  { to: '/widgets', label: 'Widgets', icon: 'puzzle', badge: widgetTotal },
-  { to: '/extensions', label: 'Extensions', icon: 'layers' },
-  { to: '/integrations', label: 'Integrations', icon: 'share2' },
-  { to: '/settings', label: 'Settings', icon: 'settings' },
+  { to: '/', label: __('Dashboard'), icon: 'grid' },
+  { to: '/widgets', label: __('Widgets'), icon: 'puzzle', badge: widgetTotal },
+  { to: '/extensions', label: __('Extensions'), icon: 'layers' },
+  { to: '/integrations', label: __('Integrations'), icon: 'share2' },
+  { to: '/settings', label: __('Settings'), icon: 'settings' },
+  ...(isPro ? [{ to: '/license', label: __('License'), icon: 'license' }] : []),
 ]
 
 const isActive = (path) => {
@@ -29,7 +33,7 @@ const isActive = (path) => {
       <img :src="logo" alt="PrimeKit" class="pk-w-9 pk-h-9 pk-flex-shrink-0" style="object-fit:contain;" />
       <div>
         <div class="pk-font-bold pk-text-sm pk-leading-tight" style="color:#111827;">PrimeKit</div>
-        <div class="pk-text-xs pk-mt-0.5" style="color:#9ca3af;">Addons v{{ version }}</div>
+        <div class="pk-text-xs pk-mt-0.5" style="color:#9ca3af;">{{ __('Addons') }} v{{ version }}</div>
       </div>
     </div>
 
@@ -67,6 +71,9 @@ const isActive = (path) => {
             <circle cx="12" cy="12" r="3"/>
             <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
           </template>
+          <template v-else-if="item.icon==='license'">
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+          </template>
         </svg>
 
         <span class="pk-flex-1">{{ item.label }}</span>
@@ -91,7 +98,7 @@ const isActive = (path) => {
         <svg class="pk-w-4 pk-h-4" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
         </svg>
-        Upgrade to Pro
+        {{ __('Upgrade to Pro') }}
       </a>
 
       <a href="#"
@@ -102,7 +109,7 @@ const isActive = (path) => {
         <svg class="pk-w-4 pk-h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/>
         </svg>
-        Setup Wizard
+        {{ __('Setup Wizard') }}
       </a>
     </div>
 
