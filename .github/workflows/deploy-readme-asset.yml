@@ -1,13 +1,7 @@
 name: Plugin asset and readme update
 
 on:
-  push:
-    branches:
-      - trunk
-    paths:
-      - .wordpress-org/**
-      - .wordpress-org/blueprints/**
-      - readme.txt
+  workflow_dispatch:
 
 jobs:
   update-assets-and-readme:
