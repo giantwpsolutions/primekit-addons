@@ -5,7 +5,7 @@ Author URI: https://www.giantwpsolutions.com/
 Contributors: giantwpsolutions, developerhabib  
 Tags: Elementor Addons, Elementor Widgets, Elementor, Theme Builder, Elementor Builder
 Requires at least: 5.4  
-Tested up to: 6.9
+Tested up to: 7.0
 Stable tag: 1.3.1
 Requires PHP: 8.0
 License: GPLv2 or later
