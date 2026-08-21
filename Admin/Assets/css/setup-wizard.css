@@ -1,0 +1,619 @@
+/* ============================================================
+   PrimeKit Addons — Setup Wizard Styles
+   ============================================================ */
+
+/* ─── Reset & Layout ──────────────────────────────────────── */
+
+body.primekit-wizard-page {
+    background: #f1f5f9;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1e293b;
+}
+
+/* Hide all WordPress admin chrome on the wizard page */
+body.primekit-wizard-page #wpadminbar,
+body.primekit-wizard-page #adminmenuback,
+body.primekit-wizard-page #adminmenuwrap,
+body.primekit-wizard-page #wpfooter,
+body.primekit-wizard-page #update-nag,
+body.primekit-wizard-page .update-nag,
+body.primekit-wizard-page .notice,
+body.primekit-wizard-page .notice-error,
+body.primekit-wizard-page .notice-warning {
+    display: none !important;
+}
+
+body.primekit-wizard-page #wpcontent,
+body.primekit-wizard-page #wpbody,
+body.primekit-wizard-page #wpbody-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+}
+
+/* ─── Outer Wrapper ───────────────────────────────────────── */
+
+.pkwiz-wrap {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────── */
+
+.pkwiz-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: #0f172a;
+    color: #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.pkwiz-sidebar__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 28px 28px 32px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pkwiz-sidebar__logo img {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+}
+
+.pkwiz-sidebar__logo span {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+}
+
+/* Steps Nav */
+.pkwiz-steps {
+    padding: 36px 28px;
+    flex: 1;
+}
+
+.pkwiz-step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.pkwiz-step__connector {
+    width: 2px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 4px 0 4px 15px; /* align with dot center */
+}
+
+.pkwiz-step__dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    background: transparent;
+    transition: all 0.25s ease;
+}
+
+.pkwiz-step__dot svg {
+    width: 16px;
+    height: 16px;
+}
+
+.pkwiz-step__label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+    transition: color 0.25s ease;
+}
+
+/* Current step */
+.pkwiz-step.is-current .pkwiz-step__dot {
+    border-color: #6366f1;
+    background: #6366f1;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
+}
+
+.pkwiz-step.is-current .pkwiz-step__label {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Completed step */
+.pkwiz-step.is-done .pkwiz-step__dot {
+    border-color: #22c55e;
+    background: #22c55e;
+    color: #fff;
+}
+
+.pkwiz-step.is-done .pkwiz-step__connector {
+    background: #22c55e;
+}
+
+.pkwiz-step.is-done .pkwiz-step__label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Sidebar Footer */
+.pkwiz-sidebar__footer {
+    padding: 20px 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.pkwiz-sidebar__footer a {
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.2s;
+}
+
+.pkwiz-sidebar__footer a:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ─── Main Content ────────────────────────────────────────── */
+
+.pkwiz-main {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 48px;
+    overflow-y: auto;
+}
+
+.pkwiz-content {
+    width: 100%;
+    max-width: 640px;
+}
+
+/* ─── Typography ──────────────────────────────────────────── */
+
+.pkwiz-heading {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 12px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+.pkwiz-subheading {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0 0 40px;
+    line-height: 1.6;
+}
+
+/* ─── Welcome Step ────────────────────────────────────────── */
+
+.pkwiz-welcome-hero {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.pkwiz-hero-logo {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+}
+
+.pkwiz-content--welcome .pkwiz-heading,
+.pkwiz-content--welcome .pkwiz-subheading {
+    text-align: center;
+}
+
+.pkwiz-features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+}
+
+.pkwiz-feature-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.pkwiz-feature-card:hover {
+    border-color: #c7d2fe;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
+}
+
+.pkwiz-feature-card__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.pkwiz-feature-card__icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.pkwiz-feature-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 6px;
+}
+
+.pkwiz-feature-card p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Icon Color Variants */
+.pkwiz-icon--widgets  { background: #ede9fe; color: #6d28d9; }
+.pkwiz-icon--theme    { background: #dbeafe; color: #1d4ed8; }
+.pkwiz-icon--templates{ background: #dcfce7; color: #15803d; }
+.pkwiz-icon--popup    { background: #fef3c7; color: #b45309; }
+
+/* ─── Features Step ───────────────────────────────────────── */
+
+.pkwiz-toggle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.pkwiz-toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    user-select: none;
+}
+
+.pkwiz-toggle-item:hover {
+    border-color: #c7d2fe;
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.07);
+}
+
+.pkwiz-toggle-item__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pkwiz-toggle-item__icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.pkwiz-toggle-item__text {
+    flex: 1;
+    min-width: 0;
+}
+
+.pkwiz-toggle-item__text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 3px;
+}
+
+.pkwiz-toggle-item__text span {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+/* Toggle Switch */
+.pkwiz-toggle-item__switch {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.pkwiz-toggle-item__switch input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.pkwiz-switch {
+    display: block;
+    width: 44px;
+    height: 24px;
+    background: #cbd5e1;
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.25s ease;
+    cursor: pointer;
+}
+
+.pkwiz-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease;
+}
+
+.pkwiz-toggle-item__switch input:checked + .pkwiz-switch {
+    background: #6366f1;
+}
+
+.pkwiz-toggle-item__switch input:checked + .pkwiz-switch::after {
+    transform: translateX(20px);
+}
+
+.pkwiz-toggle-item__switch input:focus + .pkwiz-switch {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+/* ─── Done Step ───────────────────────────────────────────── */
+
+.pkwiz-content--done {
+    text-align: center;
+}
+
+.pkwiz-done-icon {
+    width: 80px;
+    height: 80px;
+    color: #22c55e;
+    margin: 0 auto 28px;
+}
+
+.pkwiz-done-icon svg {
+    width: 80px;
+    height: 80px;
+}
+
+.pkwiz-done-links {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.pkwiz-done-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 12px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    text-decoration: none !important;
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s, color 0.2s;
+}
+
+.pkwiz-done-link:hover {
+    border-color: #a5b4fc;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+}
+
+.pkwiz-done-link__icon {
+    width: 44px;
+    height: 44px;
+    background: #ede9fe;
+    color: #6366f1;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pkwiz-done-link__icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────── */
+
+.pkwiz-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pkwiz-content--welcome .pkwiz-actions,
+.pkwiz-content--done .pkwiz-actions {
+    justify-content: center;
+}
+
+.pkwiz-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s, box-shadow 0.2s, opacity 0.2s;
+    line-height: 1;
+}
+
+.pkwiz-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.pkwiz-btn--primary {
+    background: #6366f1;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.pkwiz-btn--primary:hover {
+    background: #4f46e5;
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.pkwiz-btn--primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.pkwiz-btn--secondary {
+    background: #f1f5f9;
+    color: #475569 !important;
+    border: 1px solid #e2e8f0;
+}
+
+.pkwiz-btn--secondary:hover {
+    background: #e2e8f0;
+    color: #1e293b !important;
+}
+
+.pkwiz-btn--large {
+    padding: 14px 32px;
+    font-size: 15px;
+}
+
+/* ─── Loading State ───────────────────────────────────────── */
+
+.pkwiz-btn.is-loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.pkwiz-btn.is-loading::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: pkwiz-spin 0.7s linear infinite;
+    margin-right: 4px;
+}
+
+@keyframes pkwiz-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ─── Responsive ──────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+    .pkwiz-sidebar {
+        width: 220px;
+    }
+
+    .pkwiz-main {
+        padding: 40px 28px;
+    }
+}
+
+@media (max-width: 700px) {
+    .pkwiz-wrap {
+        flex-direction: column;
+    }
+
+    .pkwiz-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        align-items: center;
+        padding: 16px 20px;
+    }
+
+    .pkwiz-sidebar__logo {
+        padding: 0;
+        border: none;
+        flex-shrink: 0;
+    }
+
+    .pkwiz-steps {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 16px;
+        flex: 1;
+    }
+
+    .pkwiz-step__connector {
+        width: 24px;
+        height: 2px;
+        margin: 0;
+    }
+
+    .pkwiz-step__label {
+        display: none;
+    }
+
+    .pkwiz-sidebar__footer {
+        display: none;
+    }
+
+    .pkwiz-main {
+        padding: 28px 20px;
+    }
+
+    .pkwiz-features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pkwiz-done-links {
+        grid-template-columns: 1fr 1fr;
+    }
+}

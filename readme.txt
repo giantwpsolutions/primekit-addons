@@ -6,8 +6,8 @@ Contributors: giantwpsolutions, developerhabib
 Tags: Elementor Addons, Elementor Widgets, Elementor, Theme Builder, Elementor Builder
 Requires at least: 5.4  
 Tested up to: 7.0
-Stable tag: 1.3.1
-Requires PHP: 8.0
+Stable tag: 1.3.2
+Requires PHP: 8.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -271,6 +271,10 @@ Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without
 Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
 
 == Changelog ==
+
+= 1.3.2 =
+- Minor updates
+- Fixed Css issue
 
 = 1.3.1 =
 - 🆕 Page List Widget Added — repeater-based navigation list with icon, subtitle, inline badge, per-item background, and responsive vertical spacing

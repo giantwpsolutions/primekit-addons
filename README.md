@@ -2,7 +2,7 @@
 Contributors: supreoxltd   
 Tags: Elementor Addons, Elementor Widgets, Elementor, Widgets, WordPress, Page Builder, Customization, Responsive Design, Drag and Drop, Frontend Editing, Widget Library  
 Requires at least: 5.4   
-Tested up to: 6.8   
+Tested up to: 7.0   
 Requires PHP: 8.0  
 License: GPLv2 or later   
 License URI: [GPL-2.0](https://www.gnu.org/licenses/gpl-2.0.html)

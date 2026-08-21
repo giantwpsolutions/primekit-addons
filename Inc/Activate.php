@@ -22,7 +22,15 @@ class Activate {
 	 * It ensures that WordPress rewrite rules are flushed to account for any changes
 	 * in custom post types or taxonomies that the plugin may introduce.
 	 */
-	public static function activate() {		
+	public static function activate() {
 		flush_rewrite_rules();
+
+		// Skip wizard on multisite or if user already ran it once
+		if (is_multisite() || get_option('primekit_wizard_completed')) {
+			return;
+		}
+
+		// AdminManager::maybe_redirect() picks this up on the next page load
+		set_transient('primekit_setup_wizard_redirect', true, 60);
 	}
 }

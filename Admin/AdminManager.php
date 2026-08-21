@@ -28,6 +28,7 @@ use PrimeKit\Admin\Inc\Metabox\MetaBox;
 use PrimeKit\Admin\Inc\Templates\Templates;
 use PrimeKit\Admin\Inc\Dashboard\VueApp\VueAdminPage;
 use PrimeKit\Admin\Inc\RestAPI\RestAPI;
+use PrimeKit\Admin\Inc\SetupWizard\SetupWizard;
 
 /**
  * Class AdminManager
@@ -107,6 +108,7 @@ class AdminManager
         $this->MetaBox = new MetaBox();
         $this->VueAdminPage = new VueAdminPage();
         $this->RestAPI = new RestAPI();
+        new SetupWizard();
 
 
         // Initialize the Theme Builder module if the feature is enabled in settings
