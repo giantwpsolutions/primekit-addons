@@ -12,7 +12,7 @@
  * Domain Path: /languages
  * namespace: PrimeKit
  * Elementor tested up to: 4.2
- * Elementor Pro tested up to: 4.0
+ * Elementor Pro tested up to: 4.2
  * Requires Plugins: elementor
 
  */
